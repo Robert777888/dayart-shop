@@ -1,0 +1,19 @@
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Environment and sensitive data
+.env
+*.env
+credentials.json
+token.json
+
+# Tool/Agent intermediates
+.tmp/
+.temp/
+*.log
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
