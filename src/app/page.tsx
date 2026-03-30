@@ -2,10 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCart } from "@/context/CartContext";
-
 export default function HomePage() {
-  const { addItem } = useCart();
 
   return (
     <main style={{ background: "var(--color-bg)" }}>

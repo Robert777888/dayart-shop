@@ -10,13 +10,14 @@ if (process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
 }
 
 /**
- * Feltölt egy base64 képet Cloudinary-ra, háttér eltávolítással.
+ * Feltölt egy base64 képet Cloudinary-ra.
+ * Egyszerű feltöltés, háttér eltávolítás nélkül (background_removal fizetős feature).
  *
  * @param base64Image - Nyers base64 string (NEM data URI, tehát "iVBOR..." formátum)
  * @returns A feltöltött kép secure_url-je (pl. "https://res.cloudinary.com/...")
  * @throws Error ha a feltöltés sikertelen
  */
-export async function uploadWithBackgroundRemoval(
+export async function uploadToCloudinary(
   base64Image: string
 ): Promise<string> {
   // A Cloudinary a "data:image/png;base64,..." formátumot várja
@@ -25,10 +26,8 @@ export async function uploadWithBackgroundRemoval(
   const result: UploadApiResponse = await cloudinary.uploader.upload(dataUri, {
     folder: "ai-tee-designs",
     resource_type: "image",
-    transformation: [
-      { effect: "background_removal" },
-      { quality: "auto", fetch_format: "png" },
-    ],
+    quality: "auto",
+    fetch_format: "png",
   });
 
   if (!result.secure_url) {
@@ -39,16 +38,19 @@ export async function uploadWithBackgroundRemoval(
 }
 
 /**
- * Feltölt egy külső URL-ről elérhető képet Cloudinary-ra, háttér eltávolítással.
+ * @deprecated Use uploadToCloudinary instead
+ */
+export const uploadWithBackgroundRemoval = uploadToCloudinary;
+
+/**
+ * Feltölt egy külső URL-ről elérhető képet Cloudinary-ra.
  */
 export async function uploadFromUrl(imageUrl: string): Promise<string> {
   const result: UploadApiResponse = await cloudinary.uploader.upload(imageUrl, {
     folder: "ai-tee-designs",
     resource_type: "image",
-    transformation: [
-      { effect: "background_removal" },
-      { quality: "auto", fetch_format: "png" },
-    ],
+    quality: "auto",
+    fetch_format: "png",
   });
 
   if (!result.secure_url) {

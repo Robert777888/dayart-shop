@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateDesignImage } from "@/lib/gemini";
-import { uploadWithBackgroundRemoval, uploadFromUrl } from "@/lib/cloudinary";
+import { uploadWithBackgroundRemoval } from "@/lib/cloudinary";
 import { saveDesign } from "@/lib/supabase";
 import type { GeneratePayload, GenerateResponse } from "@/types";
 

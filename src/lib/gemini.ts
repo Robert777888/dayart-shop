@@ -1,8 +1,48 @@
 import { GoogleGenAI } from "@google/genai";
-import { buildDtfPrompt } from "@/lib/krea";
 
 // A GEMINI_API_KEY-t a .env.local-ból olvassuk, server-side only
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+
+/**
+ * DTF-nyomtatásra kész prompt összeállítása a megadott paraméterekből.
+ * Krea nélkül, saját implementáció.
+ */
+function buildDtfPrompt(
+  alkalom: string,
+  stilus: string,
+  kinek: string,
+  motivum: string,
+  contentType: string = "graphic_text"
+): string {
+  const styleMap: Record<string, string> = {
+    minimalist: "minimalist, clean lines, lots of negative space",
+    vintage: "vintage retro style, distressed textures, aged look",
+    bold: "bold, high contrast, strong graphic elements",
+    watercolor: "soft watercolor illustration, painterly style",
+    geometric: "geometric shapes, modern abstract design",
+    cartoon: "cartoon illustration style, fun and playful",
+  };
+  const contentMap: Record<string, string> = {
+    graphic_text: "typography with graphic elements",
+    illustration: "detailed illustration without text",
+    pattern: "repeating pattern design",
+    logo_style: "logo-style icon design",
+  };
+
+  const stylusDesc = styleMap[stilus] ?? stilus;
+  const contentDesc = contentMap[contentType] ?? contentType;
+
+  return [
+    `Create a DTF (Direct-To-Film) print-ready t-shirt design.`,
+    `Occasion: ${alkalom}.`,
+    `Recipient: ${kinek}.`,
+    `Main motif / theme: ${motivum}.`,
+    `Visual style: ${stylusDesc}.`,
+    `Design type: ${contentDesc}.`,
+    `Requirements: transparent or white background, print-ready, high contrast, suitable for fabric printing.`,
+    `The design should be centered, surrounded by plenty of empty space, no border or frame.`,
+  ].join(" ");
+}
 
 /**
  * Generál egy DTF-nyomtatásra kész design képet szöveg prompt alapján.
