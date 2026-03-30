@@ -30,7 +30,7 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<CheckoutStep>("cart");
   const [form, setForm] = useState<ShippingForm>(INITIAL_FORM);
   const [placed, setPlaced] = useState(false);
-  const [orderNum] = useState(() => `DTF-${Date.now().toString(36).toUpperCase()}`);
+  const [orderNum] = useState(() => `TI-${Date.now().toString(36).toUpperCase()}`);
 
   const shipping = SHIPPING_INFO[form.shippingMethod];
   const shippingCost = totalPrice >= 20000 ? 0 : shipping.price;

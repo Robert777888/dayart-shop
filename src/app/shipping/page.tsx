@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Szállítás & Infók – DTFStudio",
-  description: "Szállítási információk, gyártási idők és fontos tudnivalók egyedi póló rendeléshez.",
+  title: "Szállítás & Infók – Threads & Ink",
+  description: "Szállítási információk, gyártási idők és fontos tudnivalók a Threads & Ink prémium pólókhoz.",
 };
 
 export default function ShippingPage() {
@@ -10,20 +10,21 @@ export default function ShippingPage() {
     <main className="info-page">
       <div className="info-hero">
         <h1>Szállítás & Infók</h1>
-        <p>Mindent, amit tudni kell a rendelésről és kézbesítésről.</p>
+        <p>Threads & Ink – Ahol a minőség és a gondos kiszállítás találkozik.</p>
       </div>
 
       <div className="info-container">
 
         {/* Egyedi termék tájékoztató */}
         <section className="info-section">
-          <h2>⚠️ Fontos: Egyedi, Személyre Szabott Termék</h2>
-          <div className="info-highlight-box" style={{ background: "var(--color-accent-glow)", borderColor: "var(--color-accent)", padding: "20px 24px" }}>
-            <strong>Minden termékünk egyedileg, a te megrendelésedre készül.</strong>
-            <p style={{ marginTop: "8px", fontSize: "0.9rem" }}>
-              Mivel minden póló és pulóver személyre szabott designnal készül, az EU fogyasztóvédelmi
-              irányelvek alapján ezekre a termékekre <strong>nem vonatkozik az elállási jog és nem fogadunk el visszáru-t.</strong>{" "}
-              Ez alól kizárólag gyártási hiba esetén teszünk kivételt.
+          <div className="info-badge">Fontos tudnivaló</div>
+          <h2>Egyedi, Személyre Szabott Termék</h2>
+          <div className="info-highlight-box">
+            <strong>Minden Threads & Ink termék egyedileg, a te megrendelésedre készül.</strong>
+            <p>
+              Mivel minden darab egyedi AI designnal vagy speciális kéréssel készül, az EU fogyasztóvédelmi
+              irányelvek alapján ezekre a termékekre <strong>nem vonatkozik az elállási jog.</strong>{" "}
+              Minden darabot a legnagyobb gondossággal ellenőrzünk feladás előtt.
             </p>
           </div>
         </section>
@@ -95,7 +96,7 @@ export default function ShippingPage() {
                 <strong>Küldj nekünk emailt</strong>
                 <p>
                   Írd meg a rendelési számodat és csatold a fotókat:{" "}
-                  <a href="mailto:hello@dtfstudio.hu">hello@dtfstudio.hu</a>
+                  <a href="mailto:hello@threads-ink.hu">hello@threads-ink.hu</a>
                 </p>
               </div>
             </div>

@@ -50,14 +50,6 @@ const STEP_SUBTITLES: Record<WizardStep, string> = {
   5: "A design kész! Most válaszd ki, mire szeretnéd nyomtatni.",
 };
 
-const PHASE_MESSAGES: Record<GenerationPhase, string> = {
-  idle: "",
-  prompting: "Design koncepció kidolgozása...",
-  generating: "Grafika elkészítése folyamatban...",
-  polishing: "Végső simítások...",
-  uploading: "Nyomtatásra előkészítés...",
-};
-
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 
 // --- Step 1 ---
@@ -303,6 +295,14 @@ function Step5({ productType, productColor, productSize, designUrl,
   );
 }
 
+const PHASE_MESSAGES: Record<GenerationPhase, string> = {
+  idle: "",
+  prompting: "Threads & Ink koncepció kidolgozása...",
+  generating: "Prémium grafika szintézise...",
+  polishing: "Művészi simítások alkalmazása...",
+  uploading: "Nyomtatási sablon előkészítése...",
+};
+
 // --- Main Wizard ---
 export function DesignWizard({
   occasion, recipient, motif, style, contentType,
@@ -319,8 +319,9 @@ export function DesignWizard({
     <div className="wizard-container">
       {/* Header */}
       <div className="controls-header">
-        <h1>Egyedi Póló-tervező</h1>
-        <p className="subtitle">Személyre szabott design, pillanatok alatt.</p>
+        <div className="hero-badge">✧ Threads & Ink Studio</div>
+        <h1>AI Design Wizard</h1>
+        <p className="subtitle">Tervezz prémium darabokat mesterséges intelligenciával.</p>
       </div>
 
       {/* Stepper – csak a design lépéseknél */}

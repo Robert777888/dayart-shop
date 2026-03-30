@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { ShopGrid } from "@/components/ShopGrid";
 
 export const metadata: Metadata = {
-  title: "Kollekció – DTFStudio | Egyedi Pólók",
-  description: "Böngéssz egyedi tervezett pólóink között. Alap, prémium és limitált kollekciók, AI-egyedi designok. Szállítás 1-5 munkanap.",
+  title: "Kollekció – Threads & Ink | Prémium Egyedi Pólók",
+  description: "Böngéssz a Threads & Ink prémium póló kollekciói között. AI-alapú egyedi designok, organikus pamut és stílusos kiegészítők.",
 };
 
 export default function ShopPage() {

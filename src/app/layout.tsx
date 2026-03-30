@@ -8,12 +8,12 @@ import { CartDrawer } from "@/components/CartDrawer";
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["400","500","600","700","800"] });
 
 export const metadata: Metadata = {
-  title: "DTFStudio – Egyedi Póló, DTF Nyomtatás | AI Design",
-  description: "Tervezz egyedi pólót mesterséges intelligenciával. Prémium DTF nyomtatás, gyors szállítás, 100% organikus pamut. Magyar webshop.",
-  keywords: "egyedi póló, DTF nyomtatás, AI design, ajándék póló, egyedi ajándék",
+  title: "Threads & Ink ✧ Prémium Egyedi Póló & AI Design",
+  description: "Tervezz prémium egyedi pólót mesterséges intelligenciával. Threads & Ink – Ahol a kód és a pamut találkozik. 100% organikus pamut, gyors szállítás.",
+  keywords: "egyedi póló, Threads & Ink, AI design, prémium pólónyomás, ajándék póló",
   openGraph: {
-    title: "DTFStudio – Egyedi Póló Webshop",
-    description: "AI-alapú egyedi pólótervező és webshop. Tervezd meg álmaid pólóját percek alatt!",
+    title: "Threads & Ink – Az AIvezérelt Póló-tervező",
+    description: "Prémium esztétika, mesterséges intelligencia által alkotott minták. Tervezd meg saját Threads & Ink darabod!",
     type: "website",
   },
 };
@@ -35,8 +35,8 @@ export default function RootLayout({
           <footer className="site-footer">
             <div className="footer-inner">
               <div className="footer-brand">
-                <span className="footer-logo">✦ DTFStudio</span>
-                <p className="footer-tagline">Prémium egyedi póló, AI erővel.</p>
+                <span className="footer-logo">✧ Threads & Ink</span>
+                <p className="footer-tagline">Ahol a művészet és a prémium minőség összeér.</p>
               </div>
               <div className="footer-links">
                 <div className="footer-col">
@@ -60,7 +60,7 @@ export default function RootLayout({
               </div>
             </div>
             <div className="footer-bottom">
-              <p>© 2026 DTFStudio. Minden jog fenntartva. 🇭🇺 Made in Hungary</p>
+              <p>© 2026 Threads & Ink. Minden jog fenntartva. 🇭🇺 Made in Hungary</p>
               <div className="footer-payments">
                 <span className="payment-badge">💳 Bankkártya</span>
                 <span className="payment-badge">🏦 Átutalás</span>
