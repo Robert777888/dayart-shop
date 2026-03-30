@@ -1,17 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 
 export default function HomePage() {
   const { addItem } = useCart();
 
   return (
-    <main>
+    <main style={{ background: "var(--color-bg)" }}>
       {/* ── HERO ── */}
       <section className="hero-section">
         <div className="hero-content">
-          <div className="hero-badge">✧ Threads & Ink Prémium DTF</div>
+          <div className="hero-badge">✧ Prémium DTF Nyomtatás</div>
           <h1 className="hero-title">
             Tervezd meg<br />
             <span className="hero-title-accent">álmaid pólóját</span><br />
@@ -23,7 +24,7 @@ export default function HomePage() {
           </p>
           <div className="hero-cta-group">
             <Link href="/designer" className="hero-btn-primary" id="hero-design-btn">
-              ✨ Tervezz most – Threads & Ink
+              ✨ Tervezz most
             </Link>
             <Link href="/shop" className="hero-btn-secondary" id="hero-shop-btn">
               Kollekció megtekintése →
@@ -40,7 +41,14 @@ export default function HomePage() {
         <div className="hero-visual">
           <div className="hero-tee-mockup">
             <div className="hero-tee-glow" />
-            <span className="hero-tee-emoji">👕</span>
+            <Image
+              src="/mockups/tshirt-blank.png"
+              alt="Prémium póló"
+              width={380}
+              height={380}
+              className="hero-tee-img"
+              priority
+            />
             <div className="hero-tee-badge">AI Generated ✦</div>
           </div>
           <div className="hero-floating-card card-1">
@@ -57,7 +65,7 @@ export default function HomePage() {
 
       {/* ── HOW IT WORKS ── */}
       <section className="how-section">
-        <div className="section-header">
+        <div className="section-header" style={{ textAlign: "center", marginBottom: "48px" }}>
           <h2 className="section-title">Hogyan működik?</h2>
           <p className="section-sub">Három egyszerű lépés az egyedi pólódig</p>
         </div>
@@ -80,7 +88,7 @@ export default function HomePage() {
             <div className="how-step-num">03</div>
             <div className="how-step-icon">📦</div>
             <h3>Kapd meg</h3>
-            <p>1–5 munkanapon belül házhoz szállítjuk prémium csomagolásban, ajándéknak tökéletesen.</p>
+            <p>1–5 munkanapon belül házhoz szállítjuk prémium csomagolásban.</p>
           </div>
         </div>
       </section>
@@ -93,13 +101,19 @@ export default function HomePage() {
         </div>
         <div className="featured-grid">
           {[
-            { id: "ai-custom", name: "AI Egyedi Design", price: 8990, emoji: "✨", badge: "Bestseller", desc: "Teljesen egyedi, AI-tervezett design" },
-            { id: "classic-white", name: "Classic Premium Tee", price: 4990, emoji: "👕", badge: "Alap", desc: "100% organikus pamut, 180g/m²" },
-            { id: "oversized-black", name: "Oversized Drop Tee", price: 6490, emoji: "🔥", badge: "Új", desc: "Streetwear oversized fazon" },
+            { id: "tshirt-black", name: "Prémium Póló – Fekete", price: 8990, badge: "Bestseller", desc: "100% organikus pamut, 180g/m²" },
+            { id: "tshirt-white", name: "Prémium Póló – Fehér", price: 8990, badge: "Új", desc: "Klasszikus, időtálló választás" },
+            { id: "sweatshirt-black", name: "Prémium Pulóver – Fekete", price: 14990, badge: "Akció", desc: "80% pamut, 20% poliészter, 320g/m²" },
           ].map((item) => (
-            <div key={item.id} className="featured-card">
+            <Link key={item.id} href={`/shop/${item.id}`} className="featured-card" id={`featured-card-${item.id}`}>
               <div className="featured-card-img">
-                <span className="featured-card-emoji">{item.emoji}</span>
+                <Image
+                  src="/mockups/tshirt-blank.png"
+                  alt={item.name}
+                  width={200}
+                  height={200}
+                  style={{ objectFit: "contain", filter: item.id.includes("black") ? "none" : "invert(1)" }}
+                />
                 <span className="featured-card-badge">{item.badge}</span>
               </div>
               <div className="featured-card-info">
@@ -107,21 +121,10 @@ export default function HomePage() {
                 <p>{item.desc}</p>
                 <div className="featured-card-footer">
                   <span className="featured-price">{item.price.toLocaleString("hu-HU")} Ft</span>
-                  <div className="featured-actions">
-                    <button
-                      className="featured-add-btn"
-                      id={`featured-add-${item.id}`}
-                      onClick={() => addItem({ id: item.id, name: item.name, price: item.price, size: "M", color: "Fekete", quantity: 1, isCustom: item.id === "ai-custom" })}
-                    >
-                      Kosárba
-                    </button>
-                    <Link href={`/shop/${item.id}`} className="featured-detail-btn">
-                      Részletek
-                    </Link>
-                  </div>
+                  <span className="featured-detail-btn">Részletek →</span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
