@@ -14,23 +14,7 @@ export interface GenerateResponse {
   success: boolean;
   designUrl?: string;
   designId?: string;
-  provider?: 'krea' | 'gemini';
-  error?: string;
-}
-
-// ===== Krea.ai API típusok =====
-
-/** POST /generate/image/{model} válasz */
-export interface KreaJobCreateResponse {
-  job_id: string;
-}
-
-/** GET /jobs/{job_id} válasz */
-export interface KreaJobStatusResponse {
-  status: 'processing' | 'completed' | 'failed';
-  result?: {
-    urls: string[];
-  };
+  provider?: 'gemini';
   error?: string;
 }
 
