@@ -1,19 +1,36 @@
-# Progress & Handoff (CARRYOVER)
+# 📝 Session Handoff - 2026-03-30 (AI TEE Webshop - Threads & Ink Update)
 
-This file persists the state of the project between agent sessions. **The Publisher/Scribe MUST update this file at the end of every significant task.**
+## 🚨 CRITICAL RULES
+- **Visual Aesthetic**: The app MUST use the "Threads & Ink" premium cream/beige theme (`#FDFCF7` backgrounds).
+- **Mockup Fidelity**: Use ONLY the high-resolution premium mockups from `public/mockups/` (white/black).
+- **Blend Modes**: Designs on white apparel MUST use `mix-blend-mode: multiply` for realism.
+- **Port Management**: The development server MUST run on port `4321`.
 
-## 1. Current High-Level Goal
-*   [x] Centralized skill/workflow management to Obsidian vault (Done)
-*   [x] Made `agent/` folder non-hidden and project-independent (Done)
+## 🏗️ SYSTEM ARCHITECTURE
+- **Mockup Engine**: Dynamic `MockupPreview` supporting color-specific assets and realistic compositing.
+- **Branding**: "Threads & Ink" logo and typography (✧).
+- **CI/CD**: Linked to GitHub repository `arturwssystem-glitch/ai-tee-webshop`.
 
-## 2. Active Context (Where we left off)
-*   **Last Action:** Migrated all skills and workflows to Obsidian. Renamed `.agent` to `agent`. 
-*   **Current State:** Local `agent/` is primary; Obsidian vault is the global back-up.
-*   **Next Immediate Step:** Verify fresh project initiation with the new non-hidden structure.
+## 🗺️ CURRENT STATE MAP
+### ✅ Complete
+- **Premium Mockups**: Studio-lit white/black t-shirt bases generated and integrated.
+- **Threads & Ink Overhaul**: Complete CSS/UI transformation to a high-end beige aesthetic.
+- **GitHub Sync**: Pushed the entire production codebase with a valid PAT.
+- **Global Skill**: Promoted `premium-mockup-generator` to the global Antigravity library.
 
-## 3. Active Files
-*   `execution/log_parser.py`
-*   `directives/log_analysis.md`
+### 🛠️ In Progress / Next Steps
+- **Checkout Polish**: Fully align the shipping/payment forms with the Stitch reference design.
+- **Credit System**: Implementation of the lead-magnet strategy.
 
-## 4. Known Issues / Blockers
-*   (pl. Hiányzó API kulcs, nem elérhető szerver, nyitott bug)
+## 🧠 KEY REVISIONS & WHY-LOG
+- **Aesthetic Shift**: Switched from "Glassmorphism Dark" to "Threads & Ink Light" based on user inspiration to elevate perceived value.
+- **Mockup Realism**: Refined the overlay logic to include blend modes, solving the "pasted-on sticker" look.
+
+## 🔥 DAILY SKILL REVIEW (Verified 2026-03-30)
+- **Promoted**: `premium-mockup-generator` (Global).
+- **Verified**: `app-builder`, `frontend-design`, `react-best-practices`.
+
+## 🚀 IMMEDIATE NEXT STEP
+1. Run `PORT=4321 npm run dev`.
+2. Check `http://localhost:3000/designer` to see the new mockup color switching.
+3. Verify the Vercel build status on the GitHub repo.
