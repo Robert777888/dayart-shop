@@ -105,6 +105,8 @@ export default function HomePage() {
                 <img
                   src={item.img}
                   alt={item.name}
+                  width={400}
+                  height={400}
                   style={{ objectFit: "contain", height: "100%", width: "100%" }}
                 />
                 <span className="featured-card-badge">{item.badge}</span>
@@ -125,14 +127,14 @@ export default function HomePage() {
       {/* ── USP STRIP ── */}
       <section className="usp-strip">
         <div className="usp-item">
-          <span className="usp-icon">🌿</span>
+          <span className="usp-icon" aria-hidden="true">🌿</span>
           <div>
             <strong>Organikus pamut</strong>
             <p>GOTS tanúsított alapanyag</p>
           </div>
         </div>
         <div className="usp-item">
-          <span className="usp-icon">🎨</span>
+          <span className="usp-icon" aria-hidden="true">🎨</span>
           <div>
             <strong>DTF nyomtatás</strong>
             <p>Prémium, mosásálló print</p>

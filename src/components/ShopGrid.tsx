@@ -49,6 +49,8 @@ function ProductCard({ product }: { product: Product }) {
         <img
           src={`/mockups/${product.id === 'custom-tshirt' ? 'tshirt-black-premium.png' : (product.id.includes('tshirt') ? product.id + '-premium.png' : product.id + '.svg')}`}
           alt={product.name}
+          width={400}
+          height={400}
           style={{ width: '100%', height: '100%', objectFit: 'contain' }}
         />
         {product.category === "custom" && (
