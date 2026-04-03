@@ -1,7 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 
 // A GEMINI_API_KEY-t a .env.local-ból olvassuk, server-side only
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+// Lusta (lazy) inicializálás a build hiba elkerülése érdekében
+const getAiClient = () => new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "missing-key" });
 
 /**
  * DTF-nyomtatásra kész prompt összeállítása a megadott paraméterekből.
@@ -60,7 +61,8 @@ export async function generateDesignImage(
   console.log("[Gemini] Generating with Nano Banana 2 (gemini-3.1-flash-image-preview)...");
 
   try {
-    const response = await ai.models.generateContent({
+    const aiClient = getAiClient();
+    const response = await aiClient.models.generateContent({
       model: "gemini-3.1-flash-image-preview",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       config: {
