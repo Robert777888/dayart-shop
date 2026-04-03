@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 export default function HomePage() {
 
   return (
@@ -38,13 +37,11 @@ export default function HomePage() {
         <div className="hero-visual">
           <div className="hero-tee-mockup">
             <div className="hero-tee-glow" />
-            <Image
-              src="/mockups/tshirt-blank.png"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/mockups/tshirt-white.svg"
               alt="Prémium póló"
-              width={380}
-              height={380}
               className="hero-tee-img"
-              priority
             />
             <div className="hero-tee-badge">AI Generated ✦</div>
           </div>
@@ -98,18 +95,17 @@ export default function HomePage() {
         </div>
         <div className="featured-grid">
           {[
-            { id: "tshirt-black", name: "Prémium Póló – Fekete", price: 8990, badge: "Bestseller", desc: "100% organikus pamut, 180g/m²" },
-            { id: "tshirt-white", name: "Prémium Póló – Fehér", price: 8990, badge: "Új", desc: "Klasszikus, időtálló választás" },
-            { id: "sweatshirt-black", name: "Prémium Pulóver – Fekete", price: 14990, badge: "Akció", desc: "80% pamut, 20% poliészter, 320g/m²" },
+            { id: "tshirt-black", name: "Prémium Póló – Fekete", price: 8990, badge: "Bestseller", desc: "100% organikus pamut, 180g/m²", img: "/mockups/tshirt-black.svg" },
+            { id: "tshirt-white", name: "Prémium Póló – Fehér", price: 8990, badge: "Új", desc: "Klasszikus, időtálló választás", img: "/mockups/tshirt-white.svg" },
+            { id: "sweatshirt-black", name: "Prémium Pulóver – Fekete", price: 14990, badge: "Akció", desc: "80% pamut, 20% poliészter, 320g/m²", img: "/mockups/sweatshirt-black.svg" },
           ].map((item) => (
             <Link key={item.id} href={`/shop/${item.id}`} className="featured-card" id={`featured-card-${item.id}`}>
               <div className="featured-card-img">
-                <Image
-                  src="/mockups/tshirt-blank.png"
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.img}
                   alt={item.name}
-                  width={200}
-                  height={200}
-                  style={{ objectFit: "contain", filter: item.id.includes("black") ? "none" : "invert(1)" }}
+                  style={{ objectFit: "contain" }}
                 />
                 <span className="featured-card-badge">{item.badge}</span>
               </div>

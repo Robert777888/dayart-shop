@@ -1,10 +1,23 @@
-# 📝 Session Handoff - 2026-04-03 (Repo Reset & New Remote)
+# 📝 Session Handoff - 2026-04-03 (Stitch Visual Refactor + MCP Setup)
+
+## ✅ Latest Changes (2026-04-03)
+- Added an upload pipeline (`/api/upload`) with Cloudinary background removal + safe fallback upload.
+- Added an AI vs. upload toggle to the designer wizard and wired it to the new upload API.
+- Replaced mockups with higher-fidelity SVG t-shirt/sweatshirt assets (black/white) and updated hero + featured visuals.
+- Switched hero and preview SVG rendering to plain `<img>` tags to avoid Next Image quirks that can show a white block.
+- Added automatic day/night theming using the local hour, plus mobile layout refinements so the hero stays visible on phones.
+- Tuned the palette toward a warmer, more Stitch-like editorial feel by replacing neon magenta gradients with a softer terracotta accent.
+- Pulled in the Stitch reference zip and mapped the design language: paper-light day mode, deep charcoal night mode, cyan pulse accents, glassmorphism, big editorial spacing, bottom action bar behavior, and mobile-first shell treatment.
+- Added a local Stitch MCP server entry to `~/.codex/config.toml` so the Codex app can use Stitch after a session restart.
 
 ## ✅ Current State
 - The active GitHub repo is now `arturwssystem-glitch/dayart-shop`.
 - The previous `arturwssystem-glitch/ai-tee-webshop` repo was deleted and replaced with the new name.
 - Local `origin` points to `https://github.com/arturwssystem-glitch/dayart-shop.git`.
 - `main` is pushed and clean at commit `87a9c39`.
+- The working tree currently includes in-progress local edits for the Stitch-inspired visual refactor, new mockup assets, and the upload flow.
+- `~/.codex/config.toml` now includes `[mcp_servers.stitch]` pointing to `https://stitch.googleapis.com/mcp`.
+- The Stitch config was added locally, but the Codex app may need a restart/new session before the new MCP server appears in the toolset.
 
 ## ✅ What Was Validated
 - `npm run lint` passed.
@@ -15,11 +28,18 @@
 - Next.js 14 App Router webshop with routes for home, designer, shop, shipping, checkout, and `/api/generate`.
 - Shared cart flow across `ShopGrid`, product pages, drawer, and checkout.
 - AI pipeline through `useGenerator` -> API route -> Gemini -> Cloudinary -> Supabase.
+- Current design language is split by time of day.
+- Day mode is light, paper-like, editorial, and airy.
+- Night mode is deep charcoal with cyan glow accents.
+- The designer page is the main area still being aligned to the Stitch reference rhythm.
 
 ## ⚠️ Notes For Next Session
 - Keep comments minimal in runtime code so the Vercel build stays clean and maintainable.
 - `CARRYOVER.md` should remain the authoritative session state summary.
 - If needed, the next cleanup pass should focus on removing noisy comments and keeping only essential explanations.
+- Do not commit `.tmp/`; it contains extracted reference material and should stay disposable.
+- If the Stitch MCP does not show up immediately, restart Codex or open a new session.
+- The API key used for the Stitch MCP was configured locally in `~/.codex/config.toml`; rotate it if you want a fresh credential boundary.
 
 ## 🚨 CRITICAL RULES
 - **Visual Aesthetic**: The app MUST use the "Threads & Ink" premium cream/beige theme (`#FDFCF7` backgrounds).
@@ -38,20 +58,45 @@
 - **Threads & Ink Overhaul**: Complete CSS/UI transformation to a high-end beige aesthetic.
 - **GitHub Sync**: Pushed the entire production codebase with a valid PAT.
 - **Global Skill**: Promoted `premium-mockup-generator` to the global Antigravity library.
+- **Day/Night Theme**: Automatic theme switching by local hour is in place.
+- **Mobile Pass**: Hero, nav, cards, wizard, and checkout responsive work is underway and partially landed.
+- **Stitch MCP**: Local MCP config has been added and is ready after restart.
 
 ### 🛠️ In Progress / Next Steps
+- **Designer Refactor**: Finish aligning the designer page to the Stitch reference layout, spacing, and side-panel rhythm.
+- **Home Refactor**: Continue the editorial light-mode pass so the hero and product sections feel closer to the reference.
 - **Checkout Polish**: Fully align the shipping/payment forms with the Stitch reference design.
 - **Credit System**: Implementation of the lead-magnet strategy.
+- **MCP Restart**: Restart Codex or reopen the session to expose the new Stitch MCP server in tools.
 
 ## 🧠 KEY REVISIONS & WHY-LOG
 - **Aesthetic Shift**: Switched from "Glassmorphism Dark" to "Threads & Ink Light" based on user inspiration to elevate perceived value.
 - **Mockup Realism**: Refined the overlay logic to include blend modes, solving the "pasted-on sticker" look.
+- **Stitch Reference**: The imported reference shows a split personality.
+- **Light mode**: white/paper surfaces, soft shadows, rounded cards, lots of negative space.
+- **Dark mode**: deep charcoal canvas, cyan accent glow, glass panels, and a fixed bottom action bar.
+- The current implementation should continue following that structure rather than drifting back to purple/magenta accents.
+
+## 🧩 WORK-IN-PROGRESS FILES
+- `.tmp/` contains extracted Stitch reference assets and should remain disposable.
+- `public/mockups/` now contains the new SVG apparel bases used by the home page and designer preview.
+- `src/app/api/upload/` is the new upload endpoint for customer artwork handling.
+- `src/components/ThemeSync.tsx` applies the time-based theme in the browser.
+- `~/.codex/config.toml` includes the Stitch MCP server entry and is local-only.
+
+## 🔐 SECURITY / OPS
+- The Stitch MCP API key was written to the local Codex config.
+- The next session should rotate that key if a fresh credential boundary is desired.
+- The Vercel and Cloudinary keys should remain out of chat and only live in env config.
+- The repo is currently dirty because of the active refactor and extracted assets; that is expected.
 
 ## 🔥 DAILY SKILL REVIEW (Verified 2026-03-30)
 - **Promoted**: `premium-mockup-generator` (Global).
 - **Verified**: `app-builder`, `frontend-design`, `react-best-practices`.
 
 ## 🚀 IMMEDIATE NEXT STEP
-1. Run `PORT=4321 npm run dev`.
-2. Check `http://localhost:3000/designer` to see the new mockup color switching.
-3. Verify the Vercel build status on the GitHub repo.
+1. Restart Codex or open a new session so the Stitch MCP server becomes available.
+2. Run `PORT=4321 npm run dev`.
+3. Open `http://localhost:3000/` and `http://localhost:3000/designer` on desktop and mobile widths.
+4. Compare the home and designer layouts against the imported Stitch references.
+5. Verify the Vercel build status on the GitHub repo.

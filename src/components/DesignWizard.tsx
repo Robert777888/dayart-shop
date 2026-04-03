@@ -320,8 +320,8 @@ export function DesignWizard({
       {/* Header */}
       <div className="controls-header">
         <div className="hero-badge">✧ Threads & Ink Studio</div>
-        <h1>AI Design Wizard</h1>
-        <p className="subtitle">Tervezz prémium darabokat mesterséges intelligenciával.</p>
+        <h1>Egyedi Póló-tervező</h1>
+        <p className="subtitle">Személyre szabott póló, pillanatok alatt.</p>
       </div>
 
       {/* Stepper – csak a design lépéseknél */}

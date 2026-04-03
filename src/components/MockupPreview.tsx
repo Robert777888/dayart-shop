@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import type { GenerationPhase, ProductColor, ProductType } from "@/hooks/useGenerator";
 
 interface Props {
@@ -43,21 +42,29 @@ export function MockupPreview({ designUrl, isLoading, phase, productColor, produ
   };
 
   // Válasszuk ki a megfelelő alap képet
-  const baseImage = productColor === "white" 
-    ? "/mockups/tshirt-white-premium.png" 
-    : "/mockups/tshirt-black-premium.png";
+  const baseImage =
+    productType === "sweatshirt"
+      ? productColor === "white"
+        ? "/mockups/sweatshirt-white.svg"
+        : "/mockups/sweatshirt-black.svg"
+      : productColor === "white"
+        ? "/mockups/tshirt-white.svg"
+        : "/mockups/tshirt-black.svg";
+
+  const overlayStyle =
+    productType === "sweatshirt"
+      ? { top: "27%", left: "28%", width: "44%", aspectRatio: "1" }
+      : { top: "25%", left: "25%", width: "50%", aspectRatio: "1" };
 
   return (
     <div className="mockup-container">
       <div className="mockup-frame premium-look">
         {/* Alap póló kép */}
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={baseImage}
           alt={`${productColor === "white" ? "Fehér" : "Fekete"} ${productType === "tshirt" ? "póló" : "pulóver"}`}
           className="mockup-base"
-          width={800}
-          height={800}
-          priority
         />
 
         {/* Generált design overlay (csak ha van URL) */}
@@ -66,12 +73,7 @@ export function MockupPreview({ designUrl, isLoading, phase, productColor, produ
             className="design-zoom-trigger" 
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            style={{ 
-              top: '25%', // Picit feljebb a t-shirt melle felett
-              left: '25%',
-              width: '50%',
-              aspectRatio: '1',
-            }}
+            style={overlayStyle}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

@@ -1,6 +1,24 @@
 # 📑 AI TEE Webshop Changelog - 2026-03-30
 
 ## 2026-04-03
+### Added
+- Added an upload flow for customer artwork with Cloudinary background removal and a safe fallback upload.
+- Built high-fidelity SVG mockups (t-shirt + sweatshirt, black/white) with fabric texture, depth shading, and studio-style lighting.
+
+### Changed
+- Updated the designer wizard to include AI vs. upload mode selection and wired it to the new upload API.
+- Swapped hero and featured visuals to the new mockups and aligned the preview with sweatshirt placement.
+- Clarified Gemini logging to “Nano Banana 1” while keeping the Gemini 3.1 Flash Image Preview model.
+- Replaced SVG mockup rendering in the hero and preview with plain `<img>` elements to avoid Next Image/SVG rendering glitches.
+- Added automatic day/night theming so the site renders light during the day and dark at night.
+- Improved mobile layout behavior for the hero, navigation, product cards, and wizard actions.
+- Shifted the palette away from neon magenta toward a warmer Stitch-like editorial accent and added a softer paper-style background wash.
+- Added a detailed session handoff and local Stitch MCP configuration so the next session can resume the refactor cleanly.
+
+### Notes
+- Background removal uses Cloudinary add-on if enabled; otherwise it falls back automatically to standard upload.
+
+## 2026-04-03
 
 ### Added
 - Reset the GitHub target from `ai-tee-webshop` to a new repository named `dayart-shop`.
