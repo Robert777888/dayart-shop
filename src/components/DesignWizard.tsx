@@ -35,25 +35,67 @@ interface WizardProps {
 }
 
 const STEP_TITLES: Record<WizardStep, string> = {
-  1: "Kinek és mire?",
-  2: "Mi legyen rajta?",
-  3: "Hogyan épüljön fel?",
-  4: "Milyen stílusban?",
-  5: "Válaszd ki a terméked!",
+  1: "Mit tervezünk?",
+  2: "Kinek és mire?",
+  3: "Mi legyen rajta?",
+  4: "Hogyan épüljön fel?",
+  5: "Milyen stílusban?",
+  6: "Méretezés és kosár",
 };
 
 const STEP_SUBTITLES: Record<WizardStep, string> = {
-  1: "Adj meg néhány alapadatot – ez segít igazán személyessé tenni a designt.",
-  2: "Írd le, mi legyen a póló fő témája vagy motívuma.",
-  3: "Csak szöveg, csak grafika, vagy a kettő együtt?",
-  4: "Válaszd ki a vizuális stílust, ami legjobban illik a témához.",
-  5: "A design kész! Most válaszd ki, mire szeretnéd nyomtatni.",
+  1: "Először válaszd ki a terméket és a színt, hogy a mockup már az elején jó legyen.",
+  2: "Adj meg néhány alapadatot – ez segít igazán személyessé tenni a designt.",
+  3: "Írd le, mi legyen a fő motívum vagy téma.",
+  4: "Csak szöveg, csak grafika, vagy a kettő együtt?",
+  5: "Válaszd ki a vizuális stílust, ami legjobban illik a témához.",
+  6: "A design kész! Most válaszd ki a méretet, és mehet a kosárba.",
 };
 
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 
-// --- Step 1 ---
-function Step1({ occasion, recipient, onOccasionChange, onRecipientChange, onNext }: {
+// --- Step 1: Product selection ---
+function Step1({ productType, productColor, onProductTypeChange, onProductColorChange, onNext }: {
+  productType: ProductType;
+  productColor: ProductColor;
+  onProductTypeChange: (v: ProductType) => void;
+  onProductColorChange: (v: ProductColor) => void;
+  onNext: () => void;
+}) {
+  const options = BASE_PRODUCTS.filter((product) => product.type === "tshirt" || product.type === "sweatshirt");
+  const canProceed = !!productType && !!productColor;
+  return (
+    <div className="wizard-step-content">
+      <div className="product-choice-grid">
+        {options.map((option) => (
+          <button
+            key={option.id}
+            className={`product-choice-card ${productType === option.type && productColor === option.color ? "selected" : ""}`}
+            onClick={() => {
+              onProductTypeChange(option.type);
+              onProductColorChange(option.color);
+            }}
+            type="button"
+            id={`product-choice-${option.id}`}
+          >
+            <span className="product-choice-swatch" style={{ background: option.colorHex }} />
+            <span className="product-choice-label">{option.name}</span>
+            <span className="product-choice-price">{option.price.toLocaleString("hu-HU")} Ft</span>
+          </button>
+        ))}
+      </div>
+      <div className="product-choice-note">
+        A kiválasztott alap az előnézeten is azonnal látszik.
+      </div>
+      <button className="wizard-next-btn" onClick={onNext} disabled={!canProceed} type="button">
+        Tovább →
+      </button>
+    </div>
+  );
+}
+
+// --- Step 2 ---
+function Step2({ occasion, recipient, onOccasionChange, onRecipientChange, onNext }: {
   occasion: string; recipient: string;
   onOccasionChange: (v: string) => void; onRecipientChange: (v: string) => void;
   onNext: () => void;
@@ -87,8 +129,8 @@ function Step1({ occasion, recipient, onOccasionChange, onRecipientChange, onNex
   );
 }
 
-// --- Step 2 ---
-function Step2({ motif, onMotifChange, onNext, onPrev }: {
+// --- Step 3 ---
+function Step3({ motif, onMotifChange, onNext, onPrev }: {
   motif: string; onMotifChange: (v: string) => void;
   onNext: () => void; onPrev: () => void;
 }) {
@@ -121,8 +163,8 @@ function Step2({ motif, onMotifChange, onNext, onPrev }: {
   );
 }
 
-// --- Step 3 ---
-function Step3({ contentType, onContentTypeChange, onNext, onPrev }: {
+// --- Step 4 ---
+function Step4({ contentType, onContentTypeChange, onNext, onPrev }: {
   contentType: ContentType; onContentTypeChange: (v: ContentType) => void;
   onNext: () => void; onPrev: () => void;
 }) {
@@ -147,8 +189,8 @@ function Step3({ contentType, onContentTypeChange, onNext, onPrev }: {
   );
 }
 
-// --- Step 4 ---
-function Step4({ style, onStyleChange, onGenerate, onPrev, isLoading, phase }: {
+// --- Step 5 ---
+function Step5({ style, onStyleChange, onGenerate, onPrev, isLoading, phase }: {
   style: string; onStyleChange: (v: string) => void;
   onGenerate: () => void; onPrev: () => void;
   isLoading: boolean; phase: GenerationPhase;
@@ -182,8 +224,8 @@ function Step4({ style, onStyleChange, onGenerate, onPrev, isLoading, phase }: {
   );
 }
 
-// --- Step 5: Termék választó ---
-function Step5({ productType, productColor, productSize, designUrl,
+// --- Step 6: Termék választó ---
+function Step6({ productType, productColor, productSize, designUrl,
   onProductTypeChange, onProductColorChange, onProductSizeChange, onPrev }: {
   productType: ProductType; productColor: ProductColor; productSize: string;
   designUrl: string | null;
@@ -218,43 +260,9 @@ function Step5({ productType, productColor, productSize, designUrl,
   return (
     <div className="wizard-step-content">
       {/* Termék típus */}
-      <div className="form-group">
-        <label>Mit szeretnél?</label>
-        <div className="product-type-grid">
-          <button
-            className={`product-type-card ${productType === "tshirt" ? "selected" : ""}`}
-            onClick={() => onProductTypeChange("tshirt")} type="button" id="product-type-tshirt">
-            <span className="product-type-icon">👕</span>
-            <span className="product-type-label">Póló</span>
-            <span className="product-type-price">8.990 Ft</span>
-          </button>
-          <button
-            className={`product-type-card ${productType === "sweatshirt" ? "selected" : ""}`}
-            onClick={() => onProductTypeChange("sweatshirt")} type="button" id="product-type-sweatshirt">
-            <span className="product-type-icon">🧥</span>
-            <span className="product-type-label">Pulóver</span>
-            <span className="product-type-price">14.990 Ft</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Szín */}
-      <div className="form-group">
-        <label>Melyik színre?</label>
-        <div className="color-choice-grid">
-          <button
-            className={`color-choice-card ${productColor === "black" ? "selected" : ""}`}
-            onClick={() => onProductColorChange("black")} type="button" id="color-choice-black">
-            <span className="color-choice-swatch" style={{ background: "#1a1a1a" }} />
-            <span>Fekete</span>
-          </button>
-          <button
-            className={`color-choice-card ${productColor === "white" ? "selected" : ""}`}
-            onClick={() => onProductColorChange("white")} type="button" id="color-choice-white">
-            <span className="color-choice-swatch" style={{ background: "#fff", border: "1px solid #ccc" }} />
-            <span>Fehér</span>
-          </button>
-        </div>
+      <div className="product-summary-band">
+        <span>Választott alap</span>
+        <strong>{productType === "tshirt" ? "Póló" : "Pulóver"} · {productColor === "white" ? "Fehér" : "Fekete"}</strong>
       </div>
 
       {/* Méret */}
@@ -312,8 +320,8 @@ export function DesignWizard({
   onProductTypeChange, onProductColorChange, onProductSizeChange,
   onNextStep, onPrevStep, onGenerate, onReset,
 }: WizardProps) {
-  const designSteps = [1, 2, 3, 4] as WizardStep[];
-  const isProductStep = wizardStep === 5;
+  const designSteps = [1, 2, 3, 4, 5] as WizardStep[];
+  const isProductStep = wizardStep === 6;
 
   return (
     <div className="wizard-container">
@@ -326,21 +334,21 @@ export function DesignWizard({
 
       {/* Stepper – csak a design lépéseknél */}
       {!isProductStep && (
-        <div className="stepper" role="progressbar" aria-valuenow={wizardStep} aria-valuemax={4}>
+        <div className="stepper" role="progressbar" aria-valuenow={wizardStep} aria-valuemax={5}>
           {designSteps.map((step) => (
             <div key={step}
               className={`stepper-item ${wizardStep >= step ? "active" : ""} ${wizardStep === step ? "current" : ""}`}>
               <div className="stepper-dot">{wizardStep > step ? "✓" : step}</div>
-              {step < 4 && <div className="stepper-line" />}
+              {step < 5 && <div className="stepper-line" />}
             </div>
           ))}
         </div>
       )}
 
-      {/* Step 5 progress badge */}
+      {/* Step 6 progress badge */}
       {isProductStep && (
         <div className="step5-badge">
-          <span className="step5-check">✓</span> Design kész! Most válaszd ki a terméket.
+          <span className="step5-check">✓</span> Design kész! Most válaszd ki a méretet, és mehet a kosárba.
         </div>
       )}
 
@@ -350,15 +358,17 @@ export function DesignWizard({
         <p className="step-subtitle">{STEP_SUBTITLES[wizardStep]}</p>
       </div>
 
-      {wizardStep === 1 && <Step1 occasion={occasion} recipient={recipient}
+      {wizardStep === 1 && <Step1 productType={productType} productColor={productColor}
+        onProductTypeChange={onProductTypeChange} onProductColorChange={onProductColorChange} onNext={onNextStep} />}
+      {wizardStep === 2 && <Step2 occasion={occasion} recipient={recipient}
         onOccasionChange={onOccasionChange} onRecipientChange={onRecipientChange} onNext={onNextStep} />}
-      {wizardStep === 2 && <Step2 motif={motif} onMotifChange={onMotifChange}
+      {wizardStep === 3 && <Step3 motif={motif} onMotifChange={onMotifChange}
         onNext={onNextStep} onPrev={onPrevStep} />}
-      {wizardStep === 3 && <Step3 contentType={contentType} onContentTypeChange={onContentTypeChange}
+      {wizardStep === 4 && <Step4 contentType={contentType} onContentTypeChange={onContentTypeChange}
         onNext={onNextStep} onPrev={onPrevStep} />}
-      {wizardStep === 4 && <Step4 style={style} onStyleChange={onStyleChange}
+      {wizardStep === 5 && <Step5 style={style} onStyleChange={onStyleChange}
         onGenerate={onGenerate} onPrev={onPrevStep} isLoading={isLoading} phase={phase} />}
-      {wizardStep === 5 && <Step5
+      {wizardStep === 6 && <Step6
         productType={productType} productColor={productColor} productSize={productSize}
         designUrl={designUrl}
         onProductTypeChange={onProductTypeChange}
@@ -368,7 +378,7 @@ export function DesignWizard({
 
       {error && <div className="error-message" role="alert">{error}</div>}
 
-      {designUrl && !isLoading && wizardStep === 5 && (
+      {designUrl && !isLoading && wizardStep === 6 && (
         <button className="reset-btn" onClick={onReset} type="button" id="reset-wizard-btn">
           🔄 Új design tervezése
         </button>

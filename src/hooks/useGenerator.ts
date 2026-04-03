@@ -5,7 +5,7 @@ import type { GeneratePayload, GenerateResponse, ContentType } from "@/types";
 
 export type { ContentType };
 export type GenerationPhase = 'idle' | 'prompting' | 'generating' | 'polishing' | 'uploading';
-export type WizardStep = 1 | 2 | 3 | 4 | 5;
+export type WizardStep = 1 | 2 | 3 | 4 | 5 | 6;
 export type ProductType = "tshirt" | "sweatshirt";
 export type ProductColor = "black" | "white";
 
@@ -84,7 +84,7 @@ export function useGenerator() {
 
   const nextStep = useCallback(() => {
     setState((prev) => {
-      const next = Math.min(prev.wizardStep + 1, 5) as WizardStep;
+      const next = Math.min(prev.wizardStep + 1, 6) as WizardStep;
       return { ...prev, wizardStep: next, error: null };
     });
   }, []);
@@ -146,7 +146,7 @@ export function useGenerator() {
         isLoading: false,
         phase: 'idle',
         designUrl: data.designUrl!,
-        wizardStep: 5,
+        wizardStep: 6,
         error: null,
       }));
     } catch {

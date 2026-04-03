@@ -19,13 +19,13 @@ export default function DesignerPage() {
           <span className="page-intro-badge">Stitch-inspired tervezőasztal</span>
           <h1>Prémium pólótervező, letisztult lépésekben</h1>
           <p>
-            A bal oldalon élő mockupot nézel, jobb oldalon pedig egy fókuszált wizard vezet végig
-            a teljes alkotási folyamaton.
+            Először kiválasztod, hogy póló vagy pulóver, fekete vagy fehér legyen,
+            utána a fókuszált wizard végigvezet a teljes alkotási folyamaton.
           </p>
         </div>
         <div className="page-intro-chips" aria-label="Előnyök">
           <span className="page-intro-chip">Élő előnézet</span>
-          <span className="page-intro-chip">AI + upload</span>
+          <span className="page-intro-chip">Póló / pulóver választó</span>
           <span className="page-intro-chip">Mobilra optimalizált</span>
         </div>
       </section>

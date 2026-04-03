@@ -2,6 +2,15 @@
 
 ## 2026-04-03
 ### Changed
+- Redesigned the landing hero to use a darker studio-style showcase and swapped the default visual to the black premium tee so the opening frame is no longer dominated by a white mockup.
+- Added a first-step product selector to the designer wizard so users choose shirt vs. sweatshirt and black vs. white before generating.
+- Reworked the designer wizard into a six-step flow with product choice, design setup, generation, and a separate post-generation size/cart step.
+
+### Validation
+- `npx tsc --noEmit`
+
+## 2026-04-03
+### Changed
 - Verified the refreshed Gemini key by running the full Gemini -> Cloudinary -> Supabase flow successfully.
 
 ### Validation

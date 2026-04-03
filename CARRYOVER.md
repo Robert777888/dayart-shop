@@ -14,6 +14,8 @@
 - Live Gemini test failed with `403 PERMISSION_DENIED` and the provider message `Your API key was reported as leaked. Please use another API key.`
 - The generate route now classifies leaked Gemini keys explicitly and tells the user to rotate the key.
 - The refreshed Gemini key now passes the full Gemini -> Cloudinary -> Supabase flow end-to-end.
+- The landing hero now uses a darker studio-style frame with the black tee as the default visual to avoid the oversized white mockup look.
+- The designer now starts with an explicit product selector for tee/sweatshirt and black/white before the generation steps.
 
 ## ✅ Latest Changes (2026-04-03)
 - Added an upload pipeline (`/api/upload`) with Cloudinary background removal + safe fallback upload.
@@ -93,6 +95,7 @@
 - **Fail-Fast Config**: Missing Gemini key now surfaces immediately instead of returning a misleading “overloaded” message.
 - **Compromised Key**: The active Gemini key is rejected by Google as leaked, so the root fix is key rotation, not code changes.
 - **End-to-End Green**: After key rotation, the full generation pipeline completed successfully and wrote a new Supabase row.
+- **Landing Clarity**: The opening hero no longer leads with a distracting white mockup, and the designer asks for the base product up front.
 - **Stitch Reference**: The imported reference shows a split personality.
 - **Light mode**: white/paper surfaces, soft shadows, rounded cards, lots of negative space.
 - **Dark mode**: deep charcoal canvas, cyan accent glow, glass panels, and a fixed bottom action bar.

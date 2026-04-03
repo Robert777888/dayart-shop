@@ -11,11 +11,11 @@ export default function HomePage() {
           <div className="hero-badge">✧ Prémium DTF Nyomtatás</div>
           <h1 className="hero-title">
             Tervezd meg<br />
-            <span className="hero-title-accent">álmaid pólóját</span><br />
+            <span className="hero-title-accent">álmaid egyedi darabját</span><br />
             percek alatt
           </h1>
           <p className="hero-subtitle">
-            AI-alapú egyedi design, 100% organikus pamut, gyors szállítás.<br />
+            AI-alapú egyedi design pólóra vagy pulóverre, 100% organikus pamut, gyors szállítás.<br />
             Személyes ajándék vagy ikonikus streetwear – tied a választás.
           </p>
           <div className="hero-cta-group">
@@ -35,15 +35,26 @@ export default function HomePage() {
           </div>
         </div>
         <div className="hero-visual">
-          <div className="hero-tee-mockup">
-            <div className="hero-tee-glow" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/mockups/tshirt-white-premium.png"
-              alt="Prémium póló"
-              className="hero-tee-img hero-tee-photo"
-            />
-            <div className="hero-tee-badge">AI Generated ✦</div>
+          <div className="hero-stage">
+            <div className="hero-stage-label">Először kiválasztod az alapot.</div>
+            <div className="hero-stage-pills" aria-label="Választható alapok">
+              <span className="hero-stage-pill">Póló · Fekete</span>
+              <span className="hero-stage-pill">Póló · Fehér</span>
+              <span className="hero-stage-pill">Pulóver · Fekete</span>
+            </div>
+            <div className="hero-tee-mockup">
+              <div className="hero-tee-glow" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/mockups/tshirt-black-premium.png"
+                alt="Prémium fekete póló"
+                className="hero-tee-img hero-tee-photo"
+              />
+              <div className="hero-tee-badge">AI Generated ✦</div>
+            </div>
+            <div className="hero-stage-note">
+              Póló, pulóver, fekete vagy fehér. Utána jön a design.
+            </div>
           </div>
           <div className="hero-floating-card card-1">
             <span>🎂</span> Születésnapi ajándék
