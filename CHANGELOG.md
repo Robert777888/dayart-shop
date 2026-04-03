@@ -3,6 +3,18 @@
 ## 2026-04-03
 
 ### Added
+- Reset the GitHub target from `ai-tee-webshop` to a new repository named `dayart-shop`.
+- Updated the session handoff state so the next window can continue from the new repo and remote configuration.
+
+### Changed
+- Moved the active local `origin` to `https://github.com/arturwssystem-glitch/dayart-shop.git`.
+
+### Notes
+- The current main branch is pushed to the new repository and the working tree is clean.
+
+## 2026-04-03
+
+### Added
 - Completed a full repository mapping of the live webshop architecture, including routes, state flow, data layer, and documentation drift.
 - Verified `npm run lint` and `npx tsc --noEmit` on the current codebase.
 
