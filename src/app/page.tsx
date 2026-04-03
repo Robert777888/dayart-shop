@@ -39,9 +39,9 @@ export default function HomePage() {
             <div className="hero-tee-glow" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/mockups/tshirt-white.svg"
+              src="/mockups/tshirt-white-premium.png"
               alt="Prémium póló"
-              className="hero-tee-img"
+              className="hero-tee-img hero-tee-photo"
             />
             <div className="hero-tee-badge">AI Generated ✦</div>
           </div>

@@ -2,6 +2,33 @@
 
 ## 2026-04-03
 ### Changed
+- Verified the refreshed Gemini key by running the full Gemini -> Cloudinary -> Supabase flow successfully.
+
+### Validation
+- Direct Gemini generation succeeded.
+- Cloudinary upload succeeded.
+- Supabase insert succeeded and returned a new `designs` row id.
+
+## 2026-04-03
+### Changed
+- Replaced the designer preview t-shirt base with premium PNG mockups and tightened the print-area placement for a more realistic fit.
+- Switched the home hero mockup to the premium t-shirt photo and added a warm photo frame treatment so the asset blends with the light editorial background.
+- Added a stricter Gemini client guard that throws a clear error when `GEMINI_API_KEY` is missing.
+ - Added a local integration smoke test script for Cloudinary + Supabase connectivity.
+ - Improved `/api/generate` error handling to distinguish missing Gemini keys and to surface detailed errors in development.
+ - Classified leaked Gemini API keys explicitly so the UI can ask for rotation instead of showing a generic overload message.
+
+### Why
+- The previous SVG bases made the preview and hero feel flat compared to the Stitch-inspired reference and the premium product cards.
+
+### Validation
+- Visual pass only (no automated tests run).
+- Environment presence check (Cloudinary + Gemini keys).
+ - Cloudinary upload smoke test passed.
+ - Supabase REST reachable with service role; anon key returned 401.
+
+## 2026-04-03
+### Changed
 - Added Stitch-aligned page intro panels to the designer, shop, and checkout screens so the main flows share a more editorial rhythm.
 - Cleaned up the footer to remove dead links and replace them with live routes and support contact details.
 - Added shared glass-style intro cards, trust chips, and checkout summary styling to better match the current visual direction.

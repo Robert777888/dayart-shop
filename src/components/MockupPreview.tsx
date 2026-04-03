@@ -42,19 +42,20 @@ export function MockupPreview({ designUrl, isLoading, phase, productColor, produ
   };
 
   // Válasszuk ki a megfelelő alap képet
+  const isPremiumTee = productType === "tshirt";
   const baseImage =
     productType === "sweatshirt"
       ? productColor === "white"
         ? "/mockups/sweatshirt-white.svg"
         : "/mockups/sweatshirt-black.svg"
       : productColor === "white"
-        ? "/mockups/tshirt-white.svg"
-        : "/mockups/tshirt-black.svg";
+        ? "/mockups/tshirt-white-premium.png"
+        : "/mockups/tshirt-black-premium.png";
 
   const overlayStyle =
     productType === "sweatshirt"
       ? { top: "27%", left: "28%", width: "44%", aspectRatio: "1" }
-      : { top: "25%", left: "25%", width: "50%", aspectRatio: "1" };
+      : { top: "30%", left: "30%", width: "40%", aspectRatio: "1" };
 
   return (
     <div className="mockup-container">
@@ -64,7 +65,7 @@ export function MockupPreview({ designUrl, isLoading, phase, productColor, produ
         <img
           src={baseImage}
           alt={`${productColor === "white" ? "Fehér" : "Fekete"} ${productType === "tshirt" ? "póló" : "pulóver"}`}
-          className="mockup-base"
+          className={`mockup-base${isPremiumTee ? " mockup-photo" : ""}`}
         />
 
         {/* Generált design overlay (csak ha van URL) */}

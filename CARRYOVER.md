@@ -4,6 +4,16 @@
 - Added Stitch-aligned intro panels to the designer, shop, and checkout pages so the main commerce flows share one editorial layout language.
 - Reworked the footer to remove dead links and keep only live routes plus support contact details.
 - Added shared page intro chips and checkout summary cards to make the site feel more cohesive and less fragmented.
+- Switched the designer preview t-shirt base to the premium PNG mockups and re-centered the print overlay for a more realistic placement.
+- Updated the home hero to use the premium t-shirt photo and added a warm frame treatment to reduce the flat SVG look.
+- Added a stricter Gemini client guard so missing `GEMINI_API_KEY` fails fast with a clear error.
+- Added a local `.tmp/integration_smoke.js` script and copied `.env.local.bak` to `.env.local` for live service checks.
+- Cloudinary upload smoke test succeeded with current credentials.
+- Supabase REST endpoint is reachable; anon key returns 401, service role returns 200 (connectivity ok, anon key likely invalid or revoked).
+- `/api/generate` now returns a clear "missing Gemini key" error and shows the actual Gemini error message in dev mode.
+- Live Gemini test failed with `403 PERMISSION_DENIED` and the provider message `Your API key was reported as leaked. Please use another API key.`
+- The generate route now classifies leaked Gemini keys explicitly and tells the user to rotate the key.
+- The refreshed Gemini key now passes the full Gemini -> Cloudinary -> Supabase flow end-to-end.
 
 ## ✅ Latest Changes (2026-04-03)
 - Added an upload pipeline (`/api/upload`) with Cloudinary background removal + safe fallback upload.
@@ -79,6 +89,10 @@
 ## 🧠 KEY REVISIONS & WHY-LOG
 - **Aesthetic Shift**: Switched from "Glassmorphism Dark" to "Threads & Ink Light" based on user inspiration to elevate perceived value.
 - **Mockup Realism**: Refined the overlay logic to include blend modes, solving the "pasted-on sticker" look.
+- **Premium Consistency**: Aligned the designer preview and hero with the premium photo mockups so the first impression matches the product cards.
+- **Fail-Fast Config**: Missing Gemini key now surfaces immediately instead of returning a misleading “overloaded” message.
+- **Compromised Key**: The active Gemini key is rejected by Google as leaked, so the root fix is key rotation, not code changes.
+- **End-to-End Green**: After key rotation, the full generation pipeline completed successfully and wrote a new Supabase row.
 - **Stitch Reference**: The imported reference shows a split personality.
 - **Light mode**: white/paper surfaces, soft shadows, rounded cards, lots of negative space.
 - **Dark mode**: deep charcoal canvas, cyan accent glow, glass panels, and a fixed bottom action bar.

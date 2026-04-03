@@ -2,7 +2,15 @@ import { GoogleGenAI } from "@google/genai";
 
 // A GEMINI_API_KEY-t a .env.local-ból olvassuk, server-side only
 // Lusta (lazy) inicializálás a build hiba elkerülése érdekében
-const getAiClient = () => new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "missing-key" });
+const getAiClient = () => {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    const err = new Error("Missing GEMINI_API_KEY");
+    (err as Error & { code?: string }).code = "MISSING_GEMINI_KEY";
+    throw err;
+  }
+  return new GoogleGenAI({ apiKey });
+};
 
 /**
  * DTF-nyomtatásra kész prompt összeállítása a megadott paraméterekből.

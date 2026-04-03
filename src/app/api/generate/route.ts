@@ -34,8 +34,34 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateR
       imageBase64 = await generateDesignImage(occasion, style, recipient, motif, safeContentType);
     } catch (err) {
       console.error("[API] Gemini failed:", err);
+      const error = err instanceof Error ? err : new Error("Unknown Gemini error");
+      const code = (error as Error & { code?: string }).code;
+      if (code === "MISSING_GEMINI_KEY") {
+        return NextResponse.json(
+          { success: false, error: "Hiányzó Gemini API kulcs. Állítsd be a GEMINI_API_KEY változót a szerveren." },
+          { status: 500 }
+        );
+      }
+      if (error.message.includes("reported as leaked")) {
+        return NextResponse.json(
+          { success: false, error: "A Gemini API kulcs kompromittáltnak lett jelölve. Rotáld a kulcsot a Google Cloud konzolban, majd frissítsd a szerveren." },
+          { status: 403 }
+        );
+      }
+      if (error.message.includes("API key expired") || error.message.includes("API_KEY_INVALID")) {
+        return NextResponse.json(
+          { success: false, error: "A Gemini API kulcs lejárt vagy érvénytelen. Hozz létre egy új kulcsot, és frissítsd a szerveren." },
+          { status: 403 }
+        );
+      }
+      const isDev = process.env.NODE_ENV !== "production";
       return NextResponse.json(
-        { success: false, error: "A tervező szerverünk jelenleg túlterhelt. Kérlek, próbáld meg újra pár pillanat múlva!" },
+        {
+          success: false,
+          error: isDev
+            ? `Gemini hiba: ${error.message}`
+            : "A tervező szerverünk jelenleg túlterhelt. Kérlek, próbáld meg újra pár pillanat múlva!",
+        },
         { status: 502 }
       );
     }
