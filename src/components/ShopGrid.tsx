@@ -43,14 +43,17 @@ function ProductCard({ product }: { product: Product }) {
         {product.category === "limited" && <span className="badge badge-limited">🔥 Limitált</span>}
       </div>
 
-      {/* Image placeholder */}
-      <div className="product-img-wrap">
-        <div className="product-img-placeholder">
-          <span className="product-img-emoji">👕</span>
-          {product.category === "custom" && (
-            <span className="product-img-ai-badge">✨ AI</span>
-          )}
-        </div>
+      {/* Image Mockup */}
+      <div className="product-img-wrap" style={{ padding: '0px' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/mockups/${product.id === 'custom-tshirt' ? 'tshirt-black-premium.png' : (product.id.includes('tshirt') ? product.id + '-premium.png' : product.id + '.svg')}`}
+          alt={product.name}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: product.id.includes('white') ? 'multiply' : 'normal' }}
+        />
+        {product.category === "custom" && (
+          <span className="product-img-ai-badge" style={{ position: 'absolute', bottom: '80px', pointerEvents: 'none' }}>✨ AI</span>
+        )}
 
         {/* Color swatches */}
         <div className="product-colors">
