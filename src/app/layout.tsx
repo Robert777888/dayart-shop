@@ -6,6 +6,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { Navbar } from "@/components/Navbar";
 import { CartDrawer } from "@/components/CartDrawer";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeSync } from "@/components/ThemeSync";
 
 const geistSans = localFont({
@@ -33,62 +34,51 @@ export default function RootLayout({
   return (
     <html lang="hu" suppressHydrationWarning>
       <body className={geistSans.className}>
-        <Script id="theme-init" strategy="beforeInteractive">
-          {`
-            (function () {
-              try {
-                var hour = new Date().getHours();
-                var theme = hour >= 7 && hour < 19 ? 'light' : 'dark';
-                document.documentElement.dataset.theme = theme;
-                document.documentElement.style.colorScheme = theme;
-              } catch (e) {}
-            })();
-          `}
-        </Script>
-        <CartProvider>
-          <ThemeSync />
-          <Navbar />
-          <CartDrawer />
-          <div className="page-content">
-            {children}
-          </div>
-          <footer className="site-footer">
-            <div className="footer-inner">
-              <div className="footer-brand">
-                <span className="footer-logo">✧ Threads & Ink</span>
-                <p className="footer-tagline">Ahol az editorial vizuál és a prémium nyomtatás találkozik.</p>
-              </div>
-              <div className="footer-links">
-                <div className="footer-col">
-                  <h4>Vásárlás</h4>
-                  <Link href="/shop">Kollekció</Link>
-                  <Link href="/designer">Egyedi tervező</Link>
-                  <Link href="/checkout">Kosár és fizetés</Link>
-                </div>
-                <div className="footer-col">
-                  <h4>Támogatás</h4>
-                  <Link href="/shipping">Szállítás & Infók</Link>
-                  <a href="mailto:hello@threads-ink.hu">hello@threads-ink.hu</a>
-                  <span className="footer-meta">Munkanapokon válaszolunk</span>
-                </div>
-                <div className="footer-col">
-                  <h4>Bizalom</h4>
-                  <span className="footer-meta">Prémium DTF nyomtatás</span>
-                  <span className="footer-meta">20.000 Ft felett ingyen szállítás</span>
-                  <span className="footer-meta">Magyar gyártás</span>
-                </div>
-              </div>
+        <ThemeProvider>
+          <CartProvider>
+            <Navbar />
+            <CartDrawer />
+            <div className="page-content">
+              {children}
             </div>
-            <div className="footer-bottom">
-              <p>© 2026 Threads & Ink. Minden jog fenntartva. 🇭🇺 Made in Hungary</p>
-              <div className="footer-payments">
-                <span className="payment-badge">💳 Bankkártya</span>
-                <span className="payment-badge">🏦 Átutalás</span>
-                <span className="payment-badge">📦 UTM</span>
+            <footer className="site-footer">
+              <div className="footer-inner">
+                <div className="footer-brand">
+                  <span className="footer-logo">✧ Threads & Ink</span>
+                  <p className="footer-tagline">Ahol az editorial vizuál és a prémium nyomtatás találkozik.</p>
+                </div>
+                <div className="footer-links">
+                  <div className="footer-col">
+                    <h4>Vásárlás</h4>
+                    <Link href="/shop">Prémium Kollekció</Link>
+                    <Link href="/designer">Unikális AI Tervező</Link>
+                    <Link href="/size-guide">Mérettáblázat</Link>
+                  </div>
+                  <div className="footer-col">
+                    <h4>Információ</h4>
+                    <Link href="/shipping">Szállítás & Fizetés</Link>
+                    <Link href="/faq">Gyakori Kérdések</Link>
+                    <Link href="/contact">Kapcsolat</Link>
+                  </div>
+                  <div className="footer-col">
+                    <h4>Jogi Adatok</h4>
+                    <Link href="/terms">Általános Szerződési Feltételek</Link>
+                    <Link href="/privacy">Adatvédelmi Nyilatkozat</Link>
+                    <Link href="/returns">Visszaküldési Garancia</Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          </footer>
-        </CartProvider>
+              <div className="footer-bottom">
+                <p>&copy; {new Date().getFullYear()} Threads & Ink. Minden jog fenntartva.</p>
+                <div className="footer-payments">
+                  <span className="payment-badge">Bankkártya</span>
+                  <span className="payment-badge">Apple Pay</span>
+                  <span className="payment-badge">Utánvét</span>
+                </div>
+              </div>
+            </footer>
+          </CartProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,7 +1,41 @@
 /* ===== LUMINOUS ATELIER PREMIUM DESIGN SYSTEM ===== */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
+/* --- LIGHT MODE (Day) --- */
 :root {
+  --color-bg: #f7f9fa;
+  --color-bg-alt: #ffffff;
+  --color-bg-card: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f0f4f8;
+  --color-surface-glass: rgba(255, 255, 255, 0.7);
+  --color-border: rgba(0, 0, 0, 0.08); 
+  --color-border-active: rgba(19, 200, 236, 0.4);
+  --color-text-primary: #121212;
+  --color-text-secondary: #5e6a75;
+  --color-accent: #02a3c7;
+  --color-accent-hover: #13c8ec;
+  --color-accent-glow: rgba(2, 163, 199, 0.1); 
+  --color-accent-glow-strong: rgba(2, 163, 199, 0.25); 
+  --color-success: #157f4b;
+  --color-error: #d94d5c;
+  --color-error-bg: rgba(217, 77, 92, 0.05);
+  --color-warning: #b87800;
+  --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.04); 
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.06); 
+  --shadow-lg: 0 16px 50px rgba(0, 0, 0, 0.08); 
+  --radius-sm: 8px; /* 0.5rem input fields */
+  --radius-md: 24px; /* 1.5rem cards */
+  --radius-lg: 32px; /* 2rem large cards */
+  --radius-xl: 48px; /* 3rem mockups */
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --navbar-h: 80px;
+  --transition-base: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* --- DARK MODE (Night - The Neon Tailor) --- */
+:root[data-theme="dark"] {
   --color-bg: #0e0e0e;
   --color-bg-alt: #131313;
   --color-bg-card: #131313;
@@ -16,21 +50,13 @@
   --color-accent-hover: #3ddaff;
   --color-accent-glow: rgba(19, 200, 236, 0.2); 
   --color-accent-glow-strong: rgba(19, 200, 236, 0.4); 
-  --color-success: #157f4b;
-  --color-error: #d94d5c;
-  --color-error-bg: rgba(217, 77, 92, 0.1);
-  --color-warning: #b87800;
-  --shadow-sm: 0 4px 20px rgba(19, 200, 236, 0.05); /* Ambient shadow */
-  --shadow-md: 0 10px 40px rgba(19, 200, 236, 0.10); /* Ambient shadow */
-  --shadow-lg: 0 20px 60px rgba(19, 200, 236, 0.15); /* Ambient shadow */
-  --radius-sm: 8px; /* 0.5rem input fields */
-  --radius-md: 24px; /* 1.5rem cards */
-  --radius-lg: 32px; /* 2rem large cards */
-  --radius-xl: 48px; /* 3rem mockups */
-  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
-  --navbar-h: 80px;
-  --transition-base: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --color-success: #22c55e;
+  --color-error: #ff4d6a;
+  --color-error-bg: rgba(255, 77, 106, 0.1);
+  --color-warning: #fbbf24;
+  --shadow-sm: 0 4px 20px rgba(19, 200, 236, 0.03);
+  --shadow-md: 0 10px 40px rgba(19, 200, 236, 0.06);
+  --shadow-lg: 0 20px 60px rgba(19, 200, 236, 0.10);
 }
 
 /* ===== RESET ===== */
@@ -109,6 +135,15 @@ img { max-width: 100%; display: block; }
   display: flex; align-items: center; justify-content: center;
   padding: 0 4px;
 }
+.theme-btn {
+  position: relative; background: none; border: none;
+  color: var(--color-text-secondary); padding: 8px;
+  border-radius: var(--radius-sm); transition: all var(--transition-base);
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px;
+}
+.theme-btn:hover { color: var(--color-accent); background: var(--color-accent-glow); }
+
 .navbar-cta {
   padding: 9px 18px; background: var(--color-accent); color: white;
   border-radius: var(--radius-md); font-size: 0.9rem; font-weight: 600;
