@@ -34,37 +34,37 @@ export const OCCASION_OPTIONS = [
 
 export const STYLE_OPTIONS = [
   {
-    value: "Minimalist",
+    value: "minimalist",
     label: "Minimalista",
     description: "Tiszta, modern vonalak. Kevesebb több.",
     icon: "◻",
   },
   {
-    value: "Retro",
+    value: "retro",
     label: "Retró",
     description: "70-es, 80-as évek hangulata, vintage érzés.",
     icon: "📼",
   },
   {
-    value: "Streetwear",
+    value: "streetwear",
     label: "Streetwear",
     description: "Merész, városias, erős kontrasztok.",
     icon: "🔥",
   },
   {
-    value: "Cartoon",
+    value: "cartoon",
     label: "Rajzfilm",
     description: "Vibráló, vastag körvonalak, játékos világ.",
     icon: "🎨",
   },
   {
-    value: "Abstract",
+    value: "abstract",
     label: "Absztrakt",
     description: "Folyékony formák, modern művészet.",
     icon: "🌊",
   },
   {
-    value: "Typography",
+    value: "typography",
     label: "Betűközpontú",
     description: "A szöveg maga az alkotás, karakteres tipográfia.",
     icon: "Aa",

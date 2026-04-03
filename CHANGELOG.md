@@ -5,6 +5,8 @@
 - Redesigned the landing hero to use a darker studio-style showcase and swapped the default visual to the black premium tee so the opening frame is no longer dominated by a white mockup.
 - Added a first-step product selector to the designer wizard so users choose shirt vs. sweatshirt and black vs. white before generating.
 - Reworked the designer wizard into a six-step flow with product choice, design setup, generation, and a separate post-generation size/cart step.
+- Normalized style option values to lowercase keys and aligned Gemini style mappings to those values.
+ - Refactored the designer wizard by extracting each step into `src/components/designer/steps.tsx` to simplify the main component.
 
 ### Validation
 - `npx tsc --noEmit`

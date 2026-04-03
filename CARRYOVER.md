@@ -16,6 +16,8 @@
 - The refreshed Gemini key now passes the full Gemini -> Cloudinary -> Supabase flow end-to-end.
 - The landing hero now uses a darker studio-style frame with the black tee as the default visual to avoid the oversized white mockup look.
 - The designer now starts with an explicit product selector for tee/sweatshirt and black/white before the generation steps.
+- Style option values were normalized to lowercase keys and the Gemini prompt map was aligned to those keys.
+- The designer wizard steps were extracted into `src/components/designer/steps.tsx` for cleaner organization.
 
 ## ✅ Latest Changes (2026-04-03)
 - Added an upload pipeline (`/api/upload`) with Cloudinary background removal + safe fallback upload.
@@ -96,6 +98,8 @@
 - **Compromised Key**: The active Gemini key is rejected by Google as leaked, so the root fix is key rotation, not code changes.
 - **End-to-End Green**: After key rotation, the full generation pipeline completed successfully and wrote a new Supabase row.
 - **Landing Clarity**: The opening hero no longer leads with a distracting white mockup, and the designer asks for the base product up front.
+- **Style Consistency**: UI style selections now map cleanly to Gemini prompt styles without casing mismatch.
+- **Wizard Split**: The main wizard component is slimmer and each step is now isolated for easier iteration.
 - **Stitch Reference**: The imported reference shows a split personality.
 - **Light mode**: white/paper surfaces, soft shadows, rounded cards, lots of negative space.
 - **Dark mode**: deep charcoal canvas, cyan accent glow, glass panels, and a fixed bottom action bar.

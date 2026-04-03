@@ -25,11 +25,11 @@ function buildDtfPrompt(
 ): string {
   const styleMap: Record<string, string> = {
     minimalist: "minimalist, clean lines, lots of negative space",
-    vintage: "vintage retro style, distressed textures, aged look",
-    bold: "bold, high contrast, strong graphic elements",
-    watercolor: "soft watercolor illustration, painterly style",
-    geometric: "geometric shapes, modern abstract design",
+    retro: "vintage retro style, distressed textures, aged look",
+    streetwear: "bold, high contrast, urban streetwear graphic",
     cartoon: "cartoon illustration style, fun and playful",
+    abstract: "geometric abstraction, modern art, flowing shapes",
+    typography: "typography-led design, expressive lettering",
   };
   const contentMap: Record<string, string> = {
     graphic_text: "typography with graphic elements",
