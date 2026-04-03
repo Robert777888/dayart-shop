@@ -1,5 +1,27 @@
 # 📝 Session Handoff - 2026-03-30 (AI TEE Webshop - Threads & Ink Update)
 
+## 🧭 Session Handoff - 2026-04-03 (Repo Mapping & Audit)
+
+## ✅ What Was Mapped
+- **Repo structure**: Next.js 14 App Router webshop with `src/app`, `src/components`, `src/context`, `src/hooks`, `src/lib`, `src/data`, and `src/types`.
+- **Core routes**: `/`, `/designer`, `/shop`, `/shop/[id]`, `/shipping`, `/checkout`, plus `/api/generate`.
+- **Generation pipeline**: `useGenerator` -> `/api/generate` -> Gemini -> Cloudinary -> Supabase.
+- **Commerce flow**: `ShopGrid` and product pages feed the shared cart context, which is consumed by the checkout page and drawer.
+
+## ✅ Validation Results
+- `npm run lint` passed with no warnings or errors.
+- `npx tsc --noEmit` passed.
+- `npm run build` failed in `src/app/layout.tsx` because `next/font` tried to fetch `Plus Jakarta Sans` from Google Fonts and the environment has no network access.
+
+## ⚠️ Important Notes
+- The implementation docs in `docs/IMPLEMENTATION-*.md` describe an earlier/idealized generator flow, but the live code now uses a more advanced Hungarian wizard with `recipient`, `motif`, multi-step state, and product selection.
+- `src/app/layout.tsx` still depends on a remote Google Font, so production builds are currently network-sensitive.
+- `src/types/index.ts`, `src/lib/gemini.ts`, `src/lib/cloudinary.ts`, and `src/lib/supabase.ts` have evolved beyond the phase docs and should be treated as the source of truth.
+
+## 🧠 Why This Matters
+- We now have a reliable map of the current architecture, which means future fixes can target the actual runtime path instead of the older phase docs.
+- The build issue is environmental, not a TypeScript or lint problem.
+
 ## 🚨 CRITICAL RULES
 - **Visual Aesthetic**: The app MUST use the "Threads & Ink" premium cream/beige theme (`#FDFCF7` backgrounds).
 - **Mockup Fidelity**: Use ONLY the high-resolution premium mockups from `public/mockups/` (white/black).

@@ -1,5 +1,17 @@
 # 📑 AI TEE Webshop Changelog - 2026-03-30
 
+## 2026-04-03
+
+### Added
+- Completed a full repository mapping of the live webshop architecture, including routes, state flow, data layer, and documentation drift.
+- Verified `npm run lint` and `npx tsc --noEmit` on the current codebase.
+
+### Fixed
+- Documented that `npm run build` currently fails in offline environments because `src/app/layout.tsx` fetches `Plus Jakarta Sans` from Google Fonts at build time.
+
+### Notes
+- The live implementation has diverged from the phase docs and now uses a richer wizard flow in the designer, plus a broader product/cart/checkout experience.
+
 ## ✅ Accomplishments
 - **🛠️ Krea API v1 Fix**: Corrected Krea.ai endpoint from `https://api.krea.ai` to `https://api.krea.ai/v1` to resolve 404 errors.
 - **🛡️ Gemini Image Recovery**: Corrected the `generateContent` call structure; the system now successfully generates images using `gemini-3.1-flash-image-preview` (Nano Banana 2).
