@@ -95,8 +95,8 @@ export default function HomePage() {
         </div>
         <div className="featured-grid">
           {[
-            { id: "tshirt-black", name: "Prémium Póló – Fekete", price: 8990, badge: "Bestseller", desc: "100% organikus pamut, 180g/m²", img: "/mockups/tshirt-black-premium.png" },
-            { id: "tshirt-white", name: "Prémium Póló – Fehér", price: 8990, badge: "Új", desc: "Klasszikus, időtálló választás", img: "/mockups/tshirt-white-premium.png", blendMode: "multiply" },
+            { id: "tshirt-black", name: "Prémium Póló – Fekete", price: 8990, badge: "Bestseller", desc: "100% organikus pamut, 180g/m²", img: "/mockups/tshirt-black.svg" },
+            { id: "tshirt-white", name: "Prémium Póló – Fehér", price: 8990, badge: "Új", desc: "Klasszikus, időtálló választás", img: "/mockups/tshirt-white.svg" },
             { id: "sweatshirt-black", name: "Prémium Pulóver – Fekete", price: 14990, badge: "Akció", desc: "80% pamut, 20% poliészter, 320g/m²", img: "/mockups/sweatshirt-black.svg" },
           ].map((item) => (
             <Link key={item.id} href={`/shop/${item.id}`} className="featured-card" id={`featured-card-${item.id}`}>
@@ -105,7 +105,7 @@ export default function HomePage() {
                 <img
                   src={item.img}
                   alt={item.name}
-                  style={{ objectFit: "contain", mixBlendMode: (item as any).blendMode || "normal" }}
+                  style={{ objectFit: "contain" }}
                 />
                 <span className="featured-card-badge">{item.badge}</span>
               </div>

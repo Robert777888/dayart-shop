@@ -47,9 +47,9 @@ function ProductCard({ product }: { product: Product }) {
       <div className="product-img-wrap" style={{ padding: '0px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={`/mockups/${product.id === 'custom-tshirt' ? 'tshirt-black-premium.png' : (product.id.includes('tshirt') ? product.id + '-premium.png' : product.id + '.svg')}`}
+          src={`/mockups/${product.id === 'custom-tshirt' ? 'tshirt-black.svg' : product.id + '.svg'}`}
           alt={product.name}
-          style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: product.id.includes('white') ? 'multiply' : 'normal' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
         />
         {product.category === "custom" && (
           <span className="product-img-ai-badge" style={{ position: 'absolute', bottom: '80px', pointerEvents: 'none' }}>✨ AI</span>
