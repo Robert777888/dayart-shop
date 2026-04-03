@@ -13,44 +13,62 @@ export default function DesignerPage() {
   } = useGenerator();
 
   return (
-    <main className="generator-page">
-      <section className="preview-column">
-        <MockupPreview
-          designUrl={state.designUrl}
-          isLoading={state.isLoading}
-          phase={state.phase}
-          productColor={state.productColor}
-          productType={state.productType}
-        />
+    <main className="designer-page">
+      <section className="page-intro designer-intro">
+        <div className="page-intro-copy">
+          <span className="page-intro-badge">Stitch-inspired tervezőasztal</span>
+          <h1>Prémium pólótervező, letisztult lépésekben</h1>
+          <p>
+            A bal oldalon élő mockupot nézel, jobb oldalon pedig egy fókuszált wizard vezet végig
+            a teljes alkotási folyamaton.
+          </p>
+        </div>
+        <div className="page-intro-chips" aria-label="Előnyök">
+          <span className="page-intro-chip">Élő előnézet</span>
+          <span className="page-intro-chip">AI + upload</span>
+          <span className="page-intro-chip">Mobilra optimalizált</span>
+        </div>
       </section>
-      <section className="controls-column">
-        <DesignWizard
-          occasion={state.occasion}
-          recipient={state.recipient}
-          motif={state.motif}
-          style={state.style}
-          contentType={state.contentType}
-          wizardStep={state.wizardStep}
-          isLoading={state.isLoading}
-          phase={state.phase}
-          error={state.error}
-          designUrl={state.designUrl}
-          productType={state.productType}
-          productColor={state.productColor}
-          productSize={state.productSize}
-          onOccasionChange={setOccasion}
-          onRecipientChange={setRecipient}
-          onMotifChange={setMotif}
-          onStyleChange={setStyle}
-          onContentTypeChange={setContentType}
-          onProductTypeChange={setProductType}
-          onProductColorChange={setProductColor}
-          onProductSizeChange={setProductSize}
-          onNextStep={nextStep}
-          onPrevStep={prevStep}
-          onGenerate={handleGenerate}
-          onReset={resetWizard}
-        />
+
+      <section className="generator-page">
+        <section className="preview-column">
+          <MockupPreview
+            designUrl={state.designUrl}
+            isLoading={state.isLoading}
+            phase={state.phase}
+            productColor={state.productColor}
+            productType={state.productType}
+          />
+        </section>
+        <section className="controls-column">
+          <DesignWizard
+            occasion={state.occasion}
+            recipient={state.recipient}
+            motif={state.motif}
+            style={state.style}
+            contentType={state.contentType}
+            wizardStep={state.wizardStep}
+            isLoading={state.isLoading}
+            phase={state.phase}
+            error={state.error}
+            designUrl={state.designUrl}
+            productType={state.productType}
+            productColor={state.productColor}
+            productSize={state.productSize}
+            onOccasionChange={setOccasion}
+            onRecipientChange={setRecipient}
+            onMotifChange={setMotif}
+            onStyleChange={setStyle}
+            onContentTypeChange={setContentType}
+            onProductTypeChange={setProductType}
+            onProductColorChange={setProductColor}
+            onProductSizeChange={setProductSize}
+            onNextStep={nextStep}
+            onPrevStep={prevStep}
+            onGenerate={handleGenerate}
+            onReset={resetWizard}
+          />
+        </section>
       </section>
     </main>
   );

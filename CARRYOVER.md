@@ -1,5 +1,10 @@
 # 📝 Session Handoff - 2026-04-03 (Stitch Visual Refactor + MCP Setup)
 
+## ✅ Latest Changes (2026-04-03, follow-up)
+- Added Stitch-aligned intro panels to the designer, shop, and checkout pages so the main commerce flows share one editorial layout language.
+- Reworked the footer to remove dead links and keep only live routes plus support contact details.
+- Added shared page intro chips and checkout summary cards to make the site feel more cohesive and less fragmented.
+
 ## ✅ Latest Changes (2026-04-03)
 - Added an upload pipeline (`/api/upload`) with Cloudinary background removal + safe fallback upload.
 - Added an AI vs. upload toggle to the designer wizard and wired it to the new upload API.
@@ -23,6 +28,7 @@
 - `npm run lint` passed.
 - `npx tsc --noEmit` passed.
 - `npm run build` previously failed only because `next/font` tried to fetch Google Fonts in a network-restricted environment.
+- Browser screenshot verification could not complete in this environment because Playwright Chromium hit a macOS permission error (`bootstrap_check_in ... Permission denied`).
 
 ## ✅ What Was Mapped
 - Next.js 14 App Router webshop with routes for home, designer, shop, shipping, checkout, and `/api/generate`.
@@ -32,6 +38,7 @@
 - Day mode is light, paper-like, editorial, and airy.
 - Night mode is deep charcoal with cyan glow accents.
 - The designer page is the main area still being aligned to the Stitch reference rhythm.
+- The footer originally contained dead routes; those were replaced with live navigation and support links.
 
 ## ⚠️ Notes For Next Session
 - Keep comments minimal in runtime code so the Vercel build stays clean and maintainable.
@@ -63,9 +70,9 @@
 - **Stitch MCP**: Local MCP config has been added and is ready after restart.
 
 ### 🛠️ In Progress / Next Steps
-- **Designer Refactor**: Finish aligning the designer page to the Stitch reference layout, spacing, and side-panel rhythm.
+- **Designer Refactor**: Continue tightening the spacing and hierarchy on the designer page after the new intro panel landed.
 - **Home Refactor**: Continue the editorial light-mode pass so the hero and product sections feel closer to the reference.
-- **Checkout Polish**: Fully align the shipping/payment forms with the Stitch reference design.
+- **Checkout Polish**: Continue refining the shipping/payment forms after the new intro and summary card landed.
 - **Credit System**: Implementation of the lead-magnet strategy.
 - **MCP Restart**: Restart Codex or reopen the session to expose the new Stitch MCP server in tools.
 

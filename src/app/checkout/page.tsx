@@ -72,7 +72,21 @@ export default function CheckoutPage() {
 
   return (
     <main className="checkout-page">
-      <h1 className="checkout-title">Megrendelés</h1>
+      <section className="page-intro checkout-intro">
+        <div className="page-intro-copy">
+          <span className="page-intro-badge">Biztonságos checkout</span>
+          <h1>Megrendelés</h1>
+          <p>
+            Átlátható, lépéses fizetési folyamat, világos összegzéssel és egyetlen
+            fókuszban tartott döntési úttal.
+          </p>
+        </div>
+        <div className="page-intro-card">
+          <span>Jelenlegi összeg</span>
+          <strong>{grandTotal.toLocaleString("hu-HU")} Ft</strong>
+          <p>{totalPrice >= 20000 ? "Ingyenes szállítás aktív" : "Szállítási díj a következő lépésben"}</p>
+        </div>
+      </section>
 
       {/* Step Indicator */}
       <div className="checkout-steps">

@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import Link from "next/link";
+import localFont from "next/font/local";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { Navbar } from "@/components/Navbar";
 import { CartDrawer } from "@/components/CartDrawer";
 import { ThemeSync } from "@/components/ThemeSync";
 
-const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["400","500","600","700","800"] });
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-body",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Threads & Ink ✧ Prémium Egyedi Póló & AI Design",
@@ -27,7 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="hu" suppressHydrationWarning>
-      <body className={plusJakarta.className}>
+      <body className={geistSans.className}>
         <Script id="theme-init" strategy="beforeInteractive">
           {`
             (function () {
@@ -51,26 +56,26 @@ export default function RootLayout({
             <div className="footer-inner">
               <div className="footer-brand">
                 <span className="footer-logo">✧ Threads & Ink</span>
-                <p className="footer-tagline">Ahol a művészet és a prémium minőség összeér.</p>
+                <p className="footer-tagline">Ahol az editorial vizuál és a prémium nyomtatás találkozik.</p>
               </div>
               <div className="footer-links">
                 <div className="footer-col">
                   <h4>Vásárlás</h4>
-                  <a href="/shop">Kollekció</a>
-                  <a href="/designer">Egyedi tervező</a>
-                  <a href="/shipping">Szállítás & Infók</a>
+                  <Link href="/shop">Kollekció</Link>
+                  <Link href="/designer">Egyedi tervező</Link>
+                  <Link href="/checkout">Kosár és fizetés</Link>
                 </div>
                 <div className="footer-col">
-                  <h4>Segítség</h4>
-                  <a href="/faq">GYIK</a>
-                  <a href="/contact">Kapcsolat</a>
-                  <a href="/sizing">Mérettáblázat</a>
+                  <h4>Támogatás</h4>
+                  <Link href="/shipping">Szállítás & Infók</Link>
+                  <a href="mailto:hello@threads-ink.hu">hello@threads-ink.hu</a>
+                  <span className="footer-meta">Munkanapokon válaszolunk</span>
                 </div>
                 <div className="footer-col">
-                  <h4>Jogi</h4>
-                  <a href="/privacy">Adatvédelem</a>
-                  <a href="/terms">ÁSZF</a>
-                  <a href="/cookies">Cookie-k</a>
+                  <h4>Bizalom</h4>
+                  <span className="footer-meta">Prémium DTF nyomtatás</span>
+                  <span className="footer-meta">20.000 Ft felett ingyen szállítás</span>
+                  <span className="footer-meta">Magyar gyártás</span>
                 </div>
               </div>
             </div>

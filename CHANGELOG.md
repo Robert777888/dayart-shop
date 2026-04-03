@@ -1,6 +1,19 @@
 # 📑 AI TEE Webshop Changelog - 2026-03-30
 
 ## 2026-04-03
+### Changed
+- Added Stitch-aligned page intro panels to the designer, shop, and checkout screens so the main flows share a more editorial rhythm.
+- Cleaned up the footer to remove dead links and replace them with live routes and support contact details.
+- Added shared glass-style intro cards, trust chips, and checkout summary styling to better match the current visual direction.
+
+### Fixed
+- Removed duplicated footer destinations that pointed to non-existent pages.
+
+### Validation
+- `npm run lint`
+- `npx tsc --noEmit`
+
+## 2026-04-03
 ### Added
 - Added an upload flow for customer artwork with Cloudinary background removal and a safe fallback upload.
 - Built high-fidelity SVG mockups (t-shirt + sweatshirt, black/white) with fabric texture, depth shading, and studio-style lighting.
