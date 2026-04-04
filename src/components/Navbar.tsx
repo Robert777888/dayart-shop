@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Navbar() {
   const { totalItems, toggleCart } = useCart();
@@ -41,8 +40,6 @@ export function Navbar() {
 
         {/* Actions */}
         <div className="navbar-actions">
-          <ThemeToggle />
-          
           {/* Cart Button */}
           <button
             id="cart-toggle-btn"

@@ -1,31 +1,33 @@
 /* ===== LUMINOUS ATELIER PREMIUM DESIGN SYSTEM ===== */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* --- LIGHT MODE (Day) --- */
+/* --- SINGLE THEME (Warm Beige) --- */
 :root {
-  --color-bg: #f7f9fa;
-  --color-bg-alt: #ffffff;
-  --color-bg-card: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-hover: #f0f4f8;
-  --color-surface-glass: rgba(255, 255, 255, 0.7);
-  --color-border: rgba(0, 0, 0, 0.08); 
-  --color-border-active: rgba(19, 200, 236, 0.4);
-  --color-text-primary: #121212;
-  --color-text-secondary: #5e6a75;
-  --color-accent: #02a3c7;
-  --color-accent-hover: #13c8ec;
-  --color-accent-glow: rgba(2, 163, 199, 0.1); 
-  --color-accent-glow-strong: rgba(2, 163, 199, 0.25); 
-  --color-border-soft: rgba(124, 92, 66, 0.10);
-  --color-success: #157f4b;
-  --color-error: #d94d5c;
-  --color-error-bg: rgba(217, 77, 92, 0.05);
-  --color-warning: #b87800;
-  --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.04); 
-  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.06); 
-  --shadow-lg: 0 16px 50px rgba(0, 0, 0, 0.08); 
-  --shadow-card-soft: 0 10px 24px rgba(84, 68, 50, 0.05);
+  --color-bg: #f6efe6;
+  --color-bg-alt: #fbf5ee;
+  --color-bg-card: #fffaf4;
+  --color-surface: #fffaf4;
+  --color-surface-hover: #f1e6d8;
+  --color-surface-glass: rgba(255, 250, 244, 0.78);
+  --color-border: rgba(120, 96, 72, 0.14);
+  --color-border-active: rgba(183, 133, 85, 0.45);
+  --color-text-primary: #2c2116;
+  --color-text-secondary: #6b5a4a;
+  --color-accent: #b78555;
+  --color-accent-hover: #c99763;
+  --color-accent-glow: rgba(183, 133, 85, 0.18);
+  --color-accent-glow-strong: rgba(183, 133, 85, 0.32);
+  --color-border-soft: rgba(124, 92, 66, 0.12);
+  --color-success: #2f6b3f;
+  --color-error: #c44b5f;
+  --color-error-bg: rgba(196, 75, 95, 0.08);
+  --color-warning: #a86a17;
+  --premium-cream: #f6efe6;
+  --premium-dark: #2c2116;
+  --shadow-sm: 0 4px 16px rgba(80, 62, 44, 0.08);
+  --shadow-md: 0 10px 30px rgba(80, 62, 44, 0.12);
+  --shadow-lg: 0 20px 60px rgba(80, 62, 44, 0.16);
+  --shadow-card-soft: 0 10px 24px rgba(84, 68, 50, 0.08);
   --radius-sm: 8px; /* 0.5rem input fields */
   --radius-md: 24px; /* 1.5rem cards */
   --radius-lg: 32px; /* 2rem large cards */
@@ -38,31 +40,6 @@
   --transition-soft: background var(--transition-base), border-color var(--transition-base), color var(--transition-base), box-shadow var(--transition-base);
 }
 
-/* --- DARK MODE (Night - The Neon Tailor) --- */
-:root[data-theme="dark"] {
-  --color-bg: #0e0e0e;
-  --color-bg-alt: #131313;
-  --color-bg-card: #131313;
-  --color-surface: #131313;
-  --color-surface-hover: #1c1c1c;
-  --color-surface-glass: rgba(38, 38, 38, 0.6);
-  --color-border: rgba(72, 72, 71, 0.15); /* Ghost Border */
-  --color-border-active: rgba(19, 200, 236, 0.4);
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #a0a0a0;
-  --color-accent: #13c8ec;
-  --color-accent-hover: #3ddaff;
-  --color-accent-glow: rgba(19, 200, 236, 0.2); 
-  --color-accent-glow-strong: rgba(19, 200, 236, 0.4); 
-  --color-success: #22c55e;
-  --color-error: #ff4d6a;
-  --color-error-bg: rgba(255, 77, 106, 0.1);
-  --color-warning: #fbbf24;
-  --shadow-sm: 0 4px 20px rgba(19, 200, 236, 0.03);
-  --shadow-md: 0 10px 40px rgba(19, 200, 236, 0.06);
-  --shadow-lg: 0 20px 60px rgba(19, 200, 236, 0.10);
-}
-
 /* ===== RESET ===== */
 *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -71,7 +48,7 @@ html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
   background:
-    radial-gradient(circle at top, rgba(19,200,236,0.08) 0%, transparent 32%),
+    radial-gradient(circle at top, rgba(183, 133, 85, 0.16) 0%, transparent 40%),
     linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
   color: var(--color-text-primary);
   min-height: 100vh;
@@ -1077,14 +1054,14 @@ img { max-width: 100%; display: block; }
 .content-type-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
 .content-type-card { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px 12px; background: var(--color-surface); border: 1px solid var(--color-border-soft); border-radius: 20px; cursor: pointer; transition: var(--transition-interactive); font-family: var(--font-body); text-align: center; box-shadow: var(--shadow-card-soft); }
 .content-type-card:hover { border-color: var(--color-accent); background: var(--color-surface-hover); transform: translateY(-2px); }
-.content-type-card.selected { border-color: var(--color-accent); background: linear-gradient(180deg, rgba(19,200,236,0.10), rgba(19,200,236,0.03)); box-shadow: 0 0 20px var(--color-accent-glow); }
+.content-type-card.selected { border-color: var(--color-accent); background: linear-gradient(180deg, rgba(183, 133, 85, 0.12), rgba(183, 133, 85, 0.04)); box-shadow: 0 0 20px var(--color-accent-glow); }
 .card-icon { font-size: 1.8rem; }
 .card-label { font-size: 0.9rem; font-weight: 700; }
 .card-desc { font-size: 0.75rem; color: var(--color-text-secondary); line-height: 1.4; }
 .style-card-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
 .style-card { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 16px; background: var(--color-surface); border: 1px solid var(--color-border-soft); border-radius: 20px; cursor: pointer; transition: var(--transition-interactive); font-family: var(--font-body); text-align: left; box-shadow: var(--shadow-card-soft); }
 .style-card:hover { border-color: var(--color-accent); background: var(--color-surface-hover); transform: translateY(-2px); }
-.style-card.selected { border-color: var(--color-accent); background: linear-gradient(180deg, rgba(19,200,236,0.10), rgba(19,200,236,0.03)); box-shadow: 0 0 20px var(--color-accent-glow); }
+.style-card.selected { border-color: var(--color-accent); background: linear-gradient(180deg, rgba(183, 133, 85, 0.12), rgba(183, 133, 85, 0.04)); box-shadow: 0 0 20px var(--color-accent-glow); }
 .style-card-icon { font-size: 1.4rem; }
 .style-card-label { font-size: 0.95rem; font-weight: 700; }
 .style-card-desc { font-size: 0.78rem; color: var(--color-text-secondary); line-height: 1.4; }
@@ -1109,8 +1086,8 @@ img { max-width: 100%; display: block; }
   gap: 10px;
   padding: 14px 16px;
   border-radius: 20px;
-  background: linear-gradient(180deg, rgba(19,200,236,0.12), rgba(19,200,236,0.06));
-  border: 1px solid rgba(19,200,236,0.22);
+  background: linear-gradient(180deg, rgba(183, 133, 85, 0.14), rgba(183, 133, 85, 0.06));
+  border: 1px solid rgba(183, 133, 85, 0.24);
   color: var(--color-text-primary);
   font-size: 0.9rem;
   font-weight: 600;

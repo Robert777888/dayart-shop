@@ -42,3 +42,6 @@ next-env.d.ts
 # node_modules mindenhol
 **/node_modules/
 ai-tee-webshop/
+stitch_t_shirt_designer_light_mode_step_1/
+stitch_t_shirt_designer_light_mode_step_1.zip
+.env.local.bak

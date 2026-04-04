@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import localFont from "next/font/local";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { Navbar } from "@/components/Navbar";
 import { CartDrawer } from "@/components/CartDrawer";
 import { ThemeProvider } from "@/components/ThemeProvider";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-body",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Threads & Ink ✧ Prémium Egyedi Póló & AI Design",
@@ -31,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="hu" suppressHydrationWarning>
-      <body className={geistSans.className}>
+      <body>
         <ThemeProvider>
           <CartProvider>
             <Navbar />

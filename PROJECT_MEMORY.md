@@ -60,8 +60,8 @@ This file is the single place to resume work in a new window or session.
 
 ## Design System Notes
 - Theme tokens are defined in [globals.css](/Users/robertkispal/Documents/projects/AI_TEE_webshop/src/app/globals.css).
-- Shared tokens: soft border, card shadow, interactive transition.
-- Light mode is editorial and warm; dark mode is charcoal with cyan accents.
+- Single beige-only theme (no dark mode), warm bronze accent, premium cream surfaces.
+- Theme toggle removed from the navbar; ThemeProvider forced to light mode.
 
 ## Environment Variables
 - See `.env.example` for required keys and names.
@@ -69,12 +69,13 @@ This file is the single place to resume work in a new window or session.
 - Never commit `.env.local`.
 
 ## Validation
-- Lint: `python agent/skills/lint-and-validate/scripts/lint_runner.py .`
+- Lint: `npm run lint` (2026-04-04)
 - Typecheck: `npx tsc --noEmit`
 
 ## Deployment
 - GitHub remote: `https://github.com/Robert777888/dayart-shop`
 - Vercel is wired to GitHub; deployments are triggered on push to `main`.
+ - Use Git-based deploys only (no direct Vercel CLI deploy).
 
 ## Codex Workflow (Local)
 - Reference docs: `codex-workflow-v1/docs/`.
@@ -87,10 +88,9 @@ This file is the single place to resume work in a new window or session.
 - Codex folder: `/Users/robertkispal/Obsidian/AI_memory/Codex`
 - Environment: set `OBSIDIAN_VAULT_PATH=/Users/robertkispal/Obsidian/AI_memory`
 - Recommended logger: `bash execution/session_logger.sh ...`
-- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-04_115647-session-obsidian-logger-wrapper-s-env-be-ll-t-s.md`
+- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-04_130437-session-vilagos-bezs-premium-tema-az-egesz-webshopon-sot.md`
 
 ## Immediate Next Steps
-- Decide whether to restore or replace the deleted memory hook files.
-- Decide whether to create canonical `.agent/` structure in the repo.
+- Review beige theme on `/`, `/shop`, `/shop/[id]`, `/designer`, `/checkout`, `/shipping` and flag any layout tweaks.
 - Keep `codex-workflow-v1/` untracked unless you explicitly want it in GitHub.
-- Commit and push the restored memory scaffolding when approved.
+- Commit and push after approval.
