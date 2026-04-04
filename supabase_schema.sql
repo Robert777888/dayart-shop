@@ -70,6 +70,9 @@ create table if not exists product_variants (
   price_cents integer
 );
 
+create unique index if not exists product_variants_unique
+  on product_variants (base_sku, color, size, print_position);
+
 create table if not exists mockup_assets (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz default now(),
@@ -108,6 +111,15 @@ create table if not exists orders (
   currency text default 'HUF'
 );
 
+create table if not exists order_items (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now(),
+  order_id uuid references orders(id) on delete cascade,
+  selection_id uuid references design_selections(id) on delete set null,
+  quantity integer not null default 1,
+  price_cents integer
+);
+
 alter table raw_assets enable row level security;
 alter table generations enable row level security;
 alter table processed_assets enable row level security;
@@ -116,6 +128,7 @@ alter table mockup_assets enable row level security;
 alter table design_selections enable row level security;
 alter table cart_items enable row level security;
 alter table orders enable row level security;
+alter table order_items enable row level security;
 
 -- Public read for variants + mockups (frontend preview)
 create policy "Public read variants" on product_variants
@@ -137,6 +150,9 @@ create policy "Users read own cart items" on cart_items
 create policy "Users read own orders" on orders
   for select using (auth.uid() = user_id);
 
+create policy "Users read own order items" on order_items
+  for select using (true);
+
 -- Service role inserts
 create policy "Service role insert raw assets" on raw_assets
   for insert with check (true);
@@ -157,4 +173,7 @@ create policy "Service role insert cart items" on cart_items
   for insert with check (true);
 
 create policy "Service role insert orders" on orders
+  for insert with check (true);
+
+create policy "Service role insert order items" on order_items
   for insert with check (true);

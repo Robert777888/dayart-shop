@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { SHIPPING_INFO } from "@/data/products";
+import type { CheckoutResponse } from "@/types";
 
 type CheckoutStep = "cart" | "shipping" | "payment" | "confirm";
 
@@ -30,7 +31,9 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<CheckoutStep>("cart");
   const [form, setForm] = useState<ShippingForm>(INITIAL_FORM);
   const [placed, setPlaced] = useState(false);
-  const [orderNum] = useState(() => `TI-${Date.now().toString(36).toUpperCase()}`);
+  const [orderNum, setOrderNum] = useState(() => `TI-${Date.now().toString(36).toUpperCase()}`);
+  const [isPlacing, setIsPlacing] = useState(false);
+  const [placeError, setPlaceError] = useState<string | null>(null);
 
   const shipping = SHIPPING_INFO[form.shippingMethod];
   const shippingCost = totalPrice >= 20000 ? 0 : shipping.price;
@@ -43,9 +46,43 @@ export default function CheckoutPage() {
     form.firstName && form.lastName && form.email && form.phone &&
     form.zip && form.city && form.address;
 
-  const handlePlaceOrder = () => {
-    clearCart();
-    setPlaced(true);
+  const handlePlaceOrder = async () => {
+    if (isPlacing) return;
+    setIsPlacing(true);
+    setPlaceError(null);
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: state.items.map((item) => ({
+            selectionId: item.selectionId ?? null,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+          total: grandTotal,
+          currency: "HUF",
+        }),
+      });
+
+      const data: CheckoutResponse = await response.json();
+      if (!data.success) {
+        throw new Error(data.error || "Rendelés mentése sikertelen.");
+      }
+
+      if (data.orderId) {
+        setOrderNum(`TI-${data.orderId.slice(0, 8).toUpperCase()}`);
+      }
+
+      clearCart();
+      setPlaced(true);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Ismeretlen hiba történt.";
+      setPlaceError(message);
+    } finally {
+      setIsPlacing(false);
+    }
   };
 
   if (placed) {
@@ -293,10 +330,16 @@ export default function CheckoutPage() {
               </div>
               <div className="checkout-nav">
                 <button className="checkout-back-btn" onClick={() => setStep("payment")}>← Vissza</button>
-                <button className="checkout-place-btn" onClick={handlePlaceOrder} id="place-order-btn">
-                  ✅ Rendelés leadása ({grandTotal.toLocaleString("hu-HU")} Ft)
+                <button
+                  className="checkout-place-btn"
+                  onClick={handlePlaceOrder}
+                  id="place-order-btn"
+                  disabled={isPlacing || state.items.length === 0}
+                >
+                  {isPlacing ? "⏳ Rendelés mentése..." : `✅ Rendelés leadása (${grandTotal.toLocaleString("hu-HU")} Ft)`}
                 </button>
               </div>
+              {placeError && <p className="error-message" role="alert">{placeError}</p>}
             </div>
           )}
         </div>

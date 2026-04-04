@@ -266,6 +266,7 @@ export function StepSizeAndCart({
   productColor,
   productSize,
   designUrl,
+  processedAssetId,
   onProductSizeChange,
   onPrev,
 }: {
@@ -273,6 +274,7 @@ export function StepSizeAndCart({
   productColor: ProductColor;
   productSize: string;
   designUrl: string | null;
+  processedAssetId: string | null;
   onProductSizeChange: (v: string) => void;
   onPrev: () => void;
 }) {
@@ -284,8 +286,49 @@ export function StepSizeAndCart({
 
   const canAddToCart = !!productSize && !!selectedProduct;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!selectedProduct || !productSize) return;
+    let selectionId: string | null = null;
+    let cartItemId: string | null = null;
+
+    if (processedAssetId) {
+      try {
+        const selectionRes = await fetch("/api/selection", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            processedAssetId,
+            product: {
+              baseSku: selectedProduct.id,
+              color: selectedProduct.colorLabel,
+              size: productSize,
+              price: selectedProduct.price,
+            },
+          }),
+        });
+        const selectionData = await selectionRes.json();
+        selectionId = selectionData.selectionId ?? null;
+      } catch (error) {
+        console.warn("[UI] Selection save failed, continuing with local cart.", error);
+      }
+    }
+
+    try {
+      const cartRes = await fetch("/api/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          selectionId,
+          quantity: 1,
+          price: selectedProduct.price,
+        }),
+      });
+      const cartData = await cartRes.json();
+      cartItemId = cartData.cartItemId ?? null;
+    } catch (error) {
+      console.warn("[UI] Cart save failed, continuing with local cart.", error);
+    }
+
     addItem({
       id: `${selectedProduct.id}-${Date.now()}`,
       name: selectedProduct.name,
@@ -295,6 +338,8 @@ export function StepSizeAndCart({
       quantity: 1,
       designUrl: designUrl ?? undefined,
       isCustom: true,
+      selectionId,
+      cartItemId,
     });
     openCart();
   };

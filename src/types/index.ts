@@ -21,6 +21,25 @@ export interface GenerateResponse {
   error?: string;
 }
 
+export interface SelectionResponse {
+  success: boolean;
+  selectionId?: string | null;
+  variantId?: string | null;
+  error?: string;
+}
+
+export interface CartResponse {
+  success: boolean;
+  cartItemId?: string | null;
+  error?: string;
+}
+
+export interface CheckoutResponse {
+  success: boolean;
+  orderId?: string | null;
+  error?: string;
+}
+
 // ===== Magyar Varázsló Opciók =====
 
 export const OCCASION_OPTIONS = [

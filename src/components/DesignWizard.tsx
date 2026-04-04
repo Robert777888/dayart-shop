@@ -23,6 +23,7 @@ interface WizardProps {
   phase: GenerationPhase;
   error: string | null;
   designUrl: string | null;
+  processedAssetId: string | null;
   productType: ProductType;
   productColor: ProductColor;
   productSize: string;
@@ -54,6 +55,7 @@ export function DesignWizard({
   phase,
   error,
   designUrl,
+  processedAssetId,
   productType,
   productColor,
   productSize,
@@ -150,6 +152,7 @@ export function DesignWizard({
           productColor={productColor}
           productSize={productSize}
           designUrl={designUrl}
+          processedAssetId={processedAssetId}
           onProductSizeChange={onProductSizeChange}
           onPrev={onPrevStep}
         />

@@ -170,3 +170,162 @@ export async function saveGeneration(params: {
 }
 
 export { hasSupabaseConfig };
+
+export async function upsertProductVariant(params: {
+  baseSku: string;
+  color: string;
+  size: string;
+  printPosition?: string;
+  priceCents?: number | null;
+}): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping product variant upsert.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("product_variants")
+    .upsert(
+      {
+        base_sku: params.baseSku,
+        color: params.color,
+        size: params.size,
+        print_position: params.printPosition ?? "center",
+        price_cents: params.priceCents ?? null,
+      },
+      { onConflict: "base_sku,color,size,print_position" }
+    )
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("[Supabase] Failed to upsert product variant:", error.message);
+    return null;
+  }
+
+  return data.id;
+}
+
+export async function createSelection(params: {
+  userId?: string | null;
+  processedAssetId: string;
+  variantId: string;
+  mockupAssetId?: string | null;
+}): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping selection creation.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("design_selections")
+    .insert({
+      user_id: params.userId ?? null,
+      processed_asset_id: params.processedAssetId,
+      variant_id: params.variantId,
+      mockup_asset_id: params.mockupAssetId ?? null,
+      status: "selected",
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("[Supabase] Failed to create selection:", error.message);
+    return null;
+  }
+
+  return data.id;
+}
+
+export async function createCartItem(params: {
+  userId?: string | null;
+  selectionId: string | null;
+  quantity: number;
+  priceCents?: number | null;
+}): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping cart item creation.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("cart_items")
+    .insert({
+      user_id: params.userId ?? null,
+      selection_id: params.selectionId ?? null,
+      quantity: params.quantity,
+      price_cents: params.priceCents ?? null,
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("[Supabase] Failed to create cart item:", error.message);
+    return null;
+  }
+
+  return data.id;
+}
+
+export async function createOrder(params: {
+  userId?: string | null;
+  totalCents: number;
+  currency?: string;
+}): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping order creation.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("orders")
+    .insert({
+      user_id: params.userId ?? null,
+      status: "ordered",
+      total_cents: params.totalCents,
+      currency: params.currency ?? "HUF",
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("[Supabase] Failed to create order:", error.message);
+    return null;
+  }
+
+  return data.id;
+}
+
+export async function createOrderItems(params: {
+  orderId: string;
+  items: Array<{
+    selectionId: string | null;
+    quantity: number;
+    priceCents?: number | null;
+  }>;
+}): Promise<boolean> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping order items creation.");
+    return false;
+  }
+
+  const payload = params.items.map((item) => ({
+    order_id: params.orderId,
+    selection_id: item.selectionId ?? null,
+    quantity: item.quantity,
+    price_cents: item.priceCents ?? null,
+  }));
+
+  const { error } = await supabase.from("order_items").insert(payload);
+  if (error) {
+    console.error("[Supabase] Failed to create order items:", error.message);
+    return false;
+  }
+
+  return true;
+}

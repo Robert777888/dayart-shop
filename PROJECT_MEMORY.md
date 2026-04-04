@@ -30,6 +30,7 @@ This file is the single place to resume work in a new window or session.
 - Agent-ready spec drafted with concrete data model, pipeline, endpoints, screens, and state machine (awaiting decisions on raw storage, print provider, and background removal method).
 - Implemented pipeline foundations: Cloudinary raw + processed uploads, Supabase asset/generation saves, and schema updates in `supabase_schema.sql`.
 - Verified UI flow in dev server via Playwright: wizard steps 1–5 work; `/api/generate` completes but can take ~59s (generation phase visible in UI).
+- Added selection/cart/checkout APIs and Supabase helpers; wizard now saves selections + cart items (best-effort) and checkout writes orders + order items.
 - The central alignment note now captures `session logger` and the raw-to-generated memory loop.
 - Project `AGENTS.md` edits remain centralized until the pattern is clearly stable and low-risk.
 
@@ -107,4 +108,5 @@ This file is the single place to resume work in a new window or session.
 - Apply updated `supabase_schema.sql` in Supabase SQL Editor to create new tables + RLS policies.
 - Add `mockup` + `selection` endpoints, then wire UI to use selection/cart/order IDs.
 - Investigate generation latency and add UX timeout/feedback; confirm Gemini/Cloudinary/Supabase envs in local dev.
+- Consider mockup endpoint for Cloudinary overlays if/when base mockups are uploaded.
 - Regenerate distilled Codex knowledge after the next Obsidian session note write so the generated memory stays in sync.

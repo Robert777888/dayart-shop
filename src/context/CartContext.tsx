@@ -12,6 +12,8 @@ export interface CartItem {
   imageUrl?: string;
   designUrl?: string;
   isCustom?: boolean;
+  selectionId?: string | null;
+  cartItemId?: string | null;
 }
 
 interface CartState {

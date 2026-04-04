@@ -52,6 +52,7 @@ export default function DesignerPage() {
             phase={state.phase}
             error={state.error}
             designUrl={state.designUrl}
+            processedAssetId={state.processedAssetId}
             productType={state.productType}
             productColor={state.productColor}
             productSize={state.productSize}

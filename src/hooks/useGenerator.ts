@@ -24,6 +24,9 @@ export interface GeneratorState {
   productSize: string;
   // Generátor állapot
   designUrl: string | null;
+  generationId: string | null;
+  rawAssetId: string | null;
+  processedAssetId: string | null;
   isLoading: boolean;
   phase: GenerationPhase;
   error: string | null;
@@ -56,6 +59,9 @@ const INITIAL_STATE: GeneratorState = {
   productColor: "black",
   productSize: "",
   designUrl: null,
+  generationId: null,
+  rawAssetId: null,
+  processedAssetId: null,
   isLoading: false,
   phase: 'idle',
   error: null,
@@ -164,6 +170,9 @@ export function useGenerator() {
         isLoading: false,
         phase: 'idle',
         designUrl: data.designUrl!,
+        generationId: data.generationId ?? null,
+        rawAssetId: data.rawAssetId ?? null,
+        processedAssetId: data.processedAssetId ?? null,
         wizardStep: 6,
         error: null,
       }));
