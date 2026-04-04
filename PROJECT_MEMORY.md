@@ -29,6 +29,9 @@ This file is the single place to resume work in a new window or session.
 - Architecture direction clarified: separate raw generation, processed design, mockup assets, selection, and order workflows; Cloudinary for media processing, Supabase for business data, Vercel for app deploy.
 - Agent-ready spec drafted with concrete data model, pipeline, endpoints, screens, and state machine (awaiting decisions on raw storage, print provider, and background removal method).
 - Implemented pipeline foundations: Cloudinary raw + processed uploads, Supabase asset/generation saves, and schema updates in `supabase_schema.sql`.
+- Verified UI flow in dev server via Playwright: wizard steps 1–5 work; `/api/generate` completes but can take ~59s (generation phase visible in UI).
+- The central alignment note now captures `session logger` and the raw-to-generated memory loop.
+- Project `AGENTS.md` edits remain centralized until the pattern is clearly stable and low-risk.
 
 ## Current Git Status (Summary)
 - Modified: `.gitignore`, `AGENTS.md`, `CARRYOVER.md`, `CHANGELOG.md`, `ENVIRONMENT_VARS.txt`, `SKILL_INDEX.md`, `PROJECT_MEMORY.md`.
@@ -92,6 +95,7 @@ This file is the single place to resume work in a new window or session.
 - Environment: set `OBSIDIAN_VAULT_PATH=/Users/robertkispal/Obsidian/AI_memory`
 - Recommended logger: `bash execution/session_logger.sh ...`
 - Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-04_131025-session-vilagos-bezs-premium-tema-az-egesz-webshopon-sot.md`
+- Canonical vault write was sandbox-blocked this run; fallback session note and distilled notes were written to `.tmp/obsidian-vault/Codex/...`.
 
 ## Immediate Next Steps
 - Review beige theme on `/`, `/shop`, `/shop/[id]`, `/designer`, `/checkout`, `/shipping` and flag any layout tweaks.
@@ -102,3 +106,5 @@ This file is the single place to resume work in a new window or session.
 - Confirm open decisions (raw storage location, background removal approach, print provider timing) and then implement schema migrations + API updates.
 - Apply updated `supabase_schema.sql` in Supabase SQL Editor to create new tables + RLS policies.
 - Add `mockup` + `selection` endpoints, then wire UI to use selection/cart/order IDs.
+- Investigate generation latency and add UX timeout/feedback; confirm Gemini/Cloudinary/Supabase envs in local dev.
+- Regenerate distilled Codex knowledge after the next Obsidian session note write so the generated memory stays in sync.
