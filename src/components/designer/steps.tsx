@@ -4,6 +4,7 @@ import { OCCASION_OPTIONS, STYLE_OPTIONS, CONTENT_TYPE_OPTIONS } from "@/types";
 import type { ContentType, ProductType, ProductColor } from "@/hooks/useGenerator";
 import { useCart } from "@/context/CartContext";
 import { BASE_PRODUCTS } from "@/data/products";
+import type { MockupResponse } from "@/types";
 
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 
@@ -290,14 +291,38 @@ export function StepSizeAndCart({
     if (!selectedProduct || !productSize) return;
     let selectionId: string | null = null;
     let cartItemId: string | null = null;
+    let mockupAssetId: string | null = null;
 
     if (processedAssetId) {
+      try {
+        const mockupRes = await fetch("/api/mockup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            processedAssetId,
+            productType,
+            productColor,
+            product: {
+              baseSku: selectedProduct.id,
+              color: selectedProduct.colorLabel,
+              size: productSize,
+              price: selectedProduct.price,
+            },
+          }),
+        });
+        const mockupData: MockupResponse = await mockupRes.json();
+        mockupAssetId = mockupData.mockupAssetId ?? null;
+      } catch (error) {
+        console.warn("[UI] Mockup generation failed, continuing.", error);
+      }
+
       try {
         const selectionRes = await fetch("/api/selection", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             processedAssetId,
+            mockupAssetId,
             product: {
               baseSku: selectedProduct.id,
               color: selectedProduct.colorLabel,

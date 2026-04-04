@@ -329,3 +329,61 @@ export async function createOrderItems(params: {
 
   return true;
 }
+
+export async function getProcessedAssetById(id: string): Promise<{
+  cloudinaryPublicId: string;
+  cloudinaryUrl: string;
+} | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping processed asset lookup.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("processed_assets")
+    .select("cloudinary_public_id, cloudinary_url")
+    .eq("id", id)
+    .single();
+
+  if (error || !data) {
+    console.error("[Supabase] Failed to fetch processed asset:", error?.message);
+    return null;
+  }
+
+  return {
+    cloudinaryPublicId: data.cloudinary_public_id,
+    cloudinaryUrl: data.cloudinary_url,
+  };
+}
+
+export async function saveMockupAsset(params: {
+  processedAssetId: string;
+  variantId: string | null;
+  cloudinaryPublicId: string;
+  cloudinaryUrl: string;
+}): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping mockup save.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("mockup_assets")
+    .insert({
+      processed_asset_id: params.processedAssetId,
+      variant_id: params.variantId,
+      cloudinary_public_id: params.cloudinaryPublicId,
+      cloudinary_url: params.cloudinaryUrl,
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("[Supabase] Failed to save mockup asset:", error.message);
+    return null;
+  }
+
+  return data.id;
+}

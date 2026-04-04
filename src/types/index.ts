@@ -40,6 +40,13 @@ export interface CheckoutResponse {
   error?: string;
 }
 
+export interface MockupResponse {
+  success: boolean;
+  mockupUrl?: string | null;
+  mockupAssetId?: string | null;
+  error?: string;
+}
+
 // ===== Magyar Varázsló Opciók =====
 
 export const OCCASION_OPTIONS = [

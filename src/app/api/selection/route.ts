@@ -4,6 +4,7 @@ import type { SelectionResponse } from "@/types";
 
 interface SelectionPayload {
   processedAssetId: string;
+  mockupAssetId?: string | null;
   product: {
     baseSku: string;
     color: string;
@@ -15,7 +16,7 @@ interface SelectionPayload {
 export async function POST(request: NextRequest): Promise<NextResponse<SelectionResponse>> {
   try {
     const body = (await request.json()) as Partial<SelectionPayload>;
-    const { processedAssetId, product } = body;
+    const { processedAssetId, product, mockupAssetId } = body;
 
     if (!processedAssetId || !product?.baseSku || !product?.color || !product?.size) {
       return NextResponse.json(
@@ -46,6 +47,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Selection
     const selectionId = await createSelection({
       processedAssetId,
       variantId,
+      mockupAssetId: mockupAssetId ?? null,
     });
 
     if (!selectionId) {

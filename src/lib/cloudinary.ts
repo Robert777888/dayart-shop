@@ -137,3 +137,27 @@ export async function uploadProcessedAsset(
 }
 
 export { hasCloudinaryConfig };
+
+const normalizeOverlayId = (publicId: string) => publicId.replace(/\//g, ":");
+
+export function buildMockupUrl(params: {
+  basePublicId: string;
+  overlayPublicId: string;
+}): string {
+  const client = getCloudinary();
+  const overlayId = normalizeOverlayId(params.overlayPublicId);
+
+  return client.url(params.basePublicId, {
+    secure: true,
+    quality: "auto",
+    fetch_format: "png",
+    transformation: [
+      {
+        overlay: overlayId,
+        width: 0.48,
+        flags: "relative",
+        gravity: "center",
+      },
+    ],
+  });
+}

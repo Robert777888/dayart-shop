@@ -31,6 +31,7 @@ This file is the single place to resume work in a new window or session.
 - Implemented pipeline foundations: Cloudinary raw + processed uploads, Supabase asset/generation saves, and schema updates in `supabase_schema.sql`.
 - Verified UI flow in dev server via Playwright: wizard steps 1–5 work; `/api/generate` completes but can take ~59s (generation phase visible in UI).
 - Added selection/cart/checkout APIs and Supabase helpers; wizard now saves selections + cart items (best-effort) and checkout writes orders + order items.
+- Added mockup endpoint and Cloudinary overlay URL generation (uses optional mockup base public IDs).
 - The central alignment note now captures `session logger` and the raw-to-generated memory loop.
 - Project `AGENTS.md` edits remain centralized until the pattern is clearly stable and low-risk.
 
@@ -109,4 +110,5 @@ This file is the single place to resume work in a new window or session.
 - Add `mockup` + `selection` endpoints, then wire UI to use selection/cart/order IDs.
 - Investigate generation latency and add UX timeout/feedback; confirm Gemini/Cloudinary/Supabase envs in local dev.
 - Consider mockup endpoint for Cloudinary overlays if/when base mockups are uploaded.
+- Upload base mockup images to Cloudinary and set `CLOUDINARY_MOCKUP_*_PUBLIC_ID` in `.env.local` to enable overlay previews.
 - Regenerate distilled Codex knowledge after the next Obsidian session note write so the generated memory stays in sync.
