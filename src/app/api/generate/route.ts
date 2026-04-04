@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateDesignImage } from "@/lib/gemini";
-import { uploadWithBackgroundRemoval } from "@/lib/cloudinary";
-import { saveDesign } from "@/lib/supabase";
+import { hasCloudinaryConfig, uploadProcessedAsset, uploadRawAsset } from "@/lib/cloudinary";
+import { hasSupabaseConfig, saveGeneration, saveProcessedAsset, saveRawAsset } from "@/lib/supabase";
 import type { GeneratePayload, GenerateResponse } from "@/types";
 
 export async function POST(request: NextRequest): Promise<NextResponse<GenerateResponse>> {
@@ -66,18 +66,53 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateR
       );
     }
 
-    // ── Step 3: Cloudinary feltöltés ─────────────────────────
-    const canUploadToCloudinary =
-      process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME &&
-      process.env.CLOUDINARY_API_KEY &&
-      process.env.CLOUDINARY_API_SECRET;
+    // ── Step 3: Cloudinary feltöltés (raw + processed) ───────
+    const canUploadToCloudinary = hasCloudinaryConfig();
 
-    let designUrl: string;
+    let designUrl = `data:image/png;base64,${imageBase64}`;
+    let rawAssetId: string | undefined;
+    let processedAssetId: string | undefined;
+    let generationId: string | undefined;
 
     if (canUploadToCloudinary) {
-      console.log("[API] Step 3: Uploading to Cloudinary...");
+      console.log("[API] Step 3: Uploading raw + processed assets to Cloudinary...");
       try {
-        designUrl = await uploadWithBackgroundRemoval(imageBase64);
+        const rawAsset = await uploadRawAsset(imageBase64);
+        const processedResult = await uploadProcessedAsset(imageBase64);
+
+        designUrl = processedResult.asset.secureUrl || rawAsset.secureUrl;
+
+        // ── Step 4: Supabase mentés (silent fail) ────────────────
+        const canSaveToSupabase = hasSupabaseConfig();
+        if (canSaveToSupabase) {
+          console.log("[API] Step 4: Saving assets + generation to Supabase...");
+          rawAssetId = await saveRawAsset({
+            cloudinaryPublicId: rawAsset.publicId,
+            cloudinaryUrl: rawAsset.secureUrl,
+            width: rawAsset.width,
+            height: rawAsset.height,
+            bytes: rawAsset.bytes,
+            format: rawAsset.format,
+          }) ?? undefined;
+
+          processedAssetId = await saveProcessedAsset({
+            rawAssetId: rawAssetId ?? null,
+            cloudinaryPublicId: processedResult.asset.publicId,
+            cloudinaryUrl: processedResult.asset.secureUrl,
+            status: processedResult.backgroundRemoval ? "processed" : "fallback",
+          }) ?? undefined;
+
+          generationId = await saveGeneration({
+            rawAssetId: rawAssetId ?? null,
+            status: processedAssetId ? "processed" : "generated",
+            source: "gemini",
+            occasion,
+            style,
+            recipient,
+            motif,
+            contentType: safeContentType,
+          }) ?? undefined;
+        }
       } catch (err) {
         console.error("[API] Cloudinary error, using base64 fallback:", err);
         designUrl = `data:image/png;base64,${imageBase64}`;
@@ -87,32 +122,16 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateR
       designUrl = `data:image/png;base64,${imageBase64}`;
     }
 
-    // ── Step 4: Supabase mentés (silent fail) ────────────────
-    const canSaveToSupabase =
-      process.env.NEXT_PUBLIC_SUPABASE_URL &&
-      process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    let designId: string | undefined = undefined;
-
-    if (canSaveToSupabase) {
-      console.log("[API] Step 4: Saving to Supabase...");
-      const savedId = await saveDesign({
-        cloudinaryUrl: designUrl,
-        occasion,
-        style,
-        recipient,
-        motif,
-      });
-      designId = savedId ?? undefined;
-    }
-
     // ── Step 5: Válasz ────────────────────────────────────────
     console.log("[API] SUCCESS — designUrl length:", designUrl.length);
 
     return NextResponse.json({
       success: true,
       designUrl,
-      designId,
+      designId: generationId,
+      generationId,
+      rawAssetId,
+      processedAssetId,
       provider: "gemini",
     });
 

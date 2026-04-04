@@ -1,13 +1,22 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-// Server-side Supabase kliens (service role key-vel, nem anon key-vel)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+let supabaseClient: SupabaseClient | null = null;
 
-export const supabase: SupabaseClient | null = 
-  (supabaseUrl && supabaseServiceKey) 
-    ? createClient(supabaseUrl, supabaseServiceKey)
-    : null;
+const hasSupabaseConfig = () =>
+  Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+export const getSupabase = (): SupabaseClient | null => {
+  if (!hasSupabaseConfig()) {
+    return null;
+  }
+  if (!supabaseClient) {
+    supabaseClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+  }
+  return supabaseClient;
+};
 
 /**
  * Elmenti a generált design adatait a `designs` táblába.
@@ -25,6 +34,7 @@ export async function saveDesign(params: {
   recipient: string;
   motif: string;
 }): Promise<string | null> {
+  const supabase = getSupabase();
   if (!supabase) {
     console.warn("[Supabase] Client not initialized. Skipping save.");
     return null;
@@ -49,3 +59,114 @@ export async function saveDesign(params: {
 
   return data.id;
 }
+
+export async function saveRawAsset(params: {
+  cloudinaryPublicId: string;
+  cloudinaryUrl: string;
+  width?: number;
+  height?: number;
+  bytes?: number;
+  format?: string;
+}): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping raw asset save.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("raw_assets")
+    .insert({
+      cloudinary_public_id: params.cloudinaryPublicId,
+      cloudinary_url: params.cloudinaryUrl,
+      width: params.width ?? null,
+      height: params.height ?? null,
+      bytes: params.bytes ?? null,
+      format: params.format ?? null,
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("[Supabase] Failed to save raw asset:", error.message);
+    return null;
+  }
+
+  return data.id;
+}
+
+export async function saveProcessedAsset(params: {
+  rawAssetId: string | null;
+  cloudinaryPublicId: string;
+  cloudinaryUrl: string;
+  status: "processed" | "fallback";
+}): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping processed asset save.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("processed_assets")
+    .insert({
+      raw_asset_id: params.rawAssetId,
+      cloudinary_public_id: params.cloudinaryPublicId,
+      cloudinary_url: params.cloudinaryUrl,
+      status: params.status,
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("[Supabase] Failed to save processed asset:", error.message);
+    return null;
+  }
+
+  return data.id;
+}
+
+export async function saveGeneration(params: {
+  userId?: string | null;
+  rawAssetId: string | null;
+  status: "generated" | "processed";
+  prompt?: string | null;
+  source?: string;
+  occasion?: string;
+  style?: string;
+  recipient?: string;
+  motif?: string;
+  contentType?: string;
+}): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping generation save.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("generations")
+    .insert({
+      user_id: params.userId ?? null,
+      raw_asset_id: params.rawAssetId,
+      status: params.status,
+      prompt: params.prompt ?? null,
+      source: params.source ?? "gemini",
+      occasion: params.occasion ?? null,
+      style: params.style ?? null,
+      recipient: params.recipient ?? null,
+      motif: params.motif ?? null,
+      content_type: params.contentType ?? null,
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("[Supabase] Failed to save generation:", error.message);
+    return null;
+  }
+
+  return data.id;
+}
+
+export { hasSupabaseConfig };

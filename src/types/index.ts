@@ -14,6 +14,9 @@ export interface GenerateResponse {
   success: boolean;
   designUrl?: string;
   designId?: string;
+  generationId?: string;
+  rawAssetId?: string;
+  processedAssetId?: string;
   provider?: 'gemini';
   error?: string;
 }

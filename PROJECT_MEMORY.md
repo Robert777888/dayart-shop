@@ -26,6 +26,9 @@ This file is the single place to resume work in a new window or session.
 - A canonical `.agent/` scaffold and root-level `directives/` and `execution/` placeholders now exist.
 - The `codex-workflow-v1/` folder is present locally but should remain untracked.
 - The `agent/` folder exists; `.agent/` scaffold is present but not yet populated with real directives or execution scripts.
+- Architecture direction clarified: separate raw generation, processed design, mockup assets, selection, and order workflows; Cloudinary for media processing, Supabase for business data, Vercel for app deploy.
+- Agent-ready spec drafted with concrete data model, pipeline, endpoints, screens, and state machine (awaiting decisions on raw storage, print provider, and background removal method).
+- Implemented pipeline foundations: Cloudinary raw + processed uploads, Supabase asset/generation saves, and schema updates in `supabase_schema.sql`.
 
 ## Current Git Status (Summary)
 - Modified: `.gitignore`, `AGENTS.md`, `CARRYOVER.md`, `CHANGELOG.md`, `ENVIRONMENT_VARS.txt`, `SKILL_INDEX.md`, `PROJECT_MEMORY.md`.
@@ -94,3 +97,8 @@ This file is the single place to resume work in a new window or session.
 - Review beige theme on `/`, `/shop`, `/shop/[id]`, `/designer`, `/checkout`, `/shipping` and flag any layout tweaks.
 - Keep `codex-workflow-v1/` untracked unless you explicitly want it in GitHub.
 - Commit and push after approval.
+- Translate the latest architecture/spec into concrete Supabase schema migrations and API endpoints.
+- Align `/api/generate` and upload flow with the new asset pipeline (raw -> processed -> mockup -> selection -> order).
+- Confirm open decisions (raw storage location, background removal approach, print provider timing) and then implement schema migrations + API updates.
+- Apply updated `supabase_schema.sql` in Supabase SQL Editor to create new tables + RLS policies.
+- Add `mockup` + `selection` endpoints, then wire UI to use selection/cart/order IDs.
