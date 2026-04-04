@@ -20,6 +20,11 @@
 - IMAGE_HEIGHT
 - IMAGE_STEPS
 
+## Obsidian (memory)
+- OBSIDIAN_VAULT_PATH
+  - Set to `/Users/robertkispal/Obsidian/AI_memory`
+  - Codex subfolder is used by the session logger wrapper
+
 Notes:
 - Use `.env.example` as the authoritative key list.
 - Never commit `.env.local`.

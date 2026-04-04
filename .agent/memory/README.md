@@ -10,3 +10,6 @@ Obsidian base path:
 
 Codex folder:
 `/Users/robertkispal/Obsidian/AI_memory/Codex`
+
+Preferred logger:
+`bash execution/session_logger.sh ...`

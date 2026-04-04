@@ -85,7 +85,9 @@ This file is the single place to resume work in a new window or session.
 ## Obsidian Session Notes
 - Base path: `/Users/robertkispal/Obsidian/AI_memory`
 - Codex folder: `/Users/robertkispal/Obsidian/AI_memory/Codex`
-- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-04_115142-session-obsidian-base-path-friss-t-se.md`
+- Environment: set `OBSIDIAN_VAULT_PATH=/Users/robertkispal/Obsidian/AI_memory`
+- Recommended logger: `bash execution/session_logger.sh ...`
+- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-04_115647-session-obsidian-logger-wrapper-s-env-be-ll-t-s.md`
 
 ## Immediate Next Steps
 - Decide whether to restore or replace the deleted memory hook files.

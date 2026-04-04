@@ -9,3 +9,4 @@
 ### Changed
 - Updated `.gitignore` to keep `codex-workflow-v1/` and `.tmp/` local only.
 - Noted new Obsidian base path: `/Users/robertkispal/Obsidian/AI_memory` (Codex subfolder).
+- Added `execution/session_logger.sh` wrapper for consistent Obsidian logging.
