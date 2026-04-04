@@ -20,6 +20,10 @@
 .DS_Store
 *.pem
 
+# local workflow/runtime
+codex-workflow-v1/
+.tmp/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

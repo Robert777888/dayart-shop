@@ -1,34 +1,25 @@
-AI TEE Webshop - Environment Variables
-======================================
+# Environment Variables (Template)
 
-Use the same variable names in:
-- local `.env.local`
-- Vercel Project Settings -> Environment Variables
+## Gemini (Google AI)
+- GEMINI_API_KEY
 
-Required for the current generator flow
---------------------------------------
+## Cloudinary
+- NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+- CLOUDINARY_API_KEY
+- CLOUDINARY_API_SECRET
 
-GEMINI_API_KEY=your_gemini_api_key
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+## Supabase
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
 
-Optional, only if you still use the older/alternate AI fallback path
--------------------------------------------------------------------
+## Krea.ai (optional legacy)
+- KREA_API_TOKEN
+- KREA_MODEL_ENDPOINT
+- IMAGE_WIDTH
+- IMAGE_HEIGHT
+- IMAGE_STEPS
 
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-KREA_API_TOKEN=your_krea_token
-KREA_MODEL_ENDPOINT=google/nano-banana-2
-IMAGE_WIDTH=1024
-IMAGE_HEIGHT=1024
-IMAGE_STEPS=28
-
-Notes
------
-- Do not prefix `GEMINI_API_KEY`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, or `SUPABASE_SERVICE_ROLE_KEY` with `NEXT_PUBLIC_`.
-- `NEXT_PUBLIC_` variables are exposed to the browser.
-- After updating Vercel env vars, trigger a redeploy.
-- Keep `.env.local` out of git.
-
+Notes:
+- Use `.env.example` as the authoritative key list.
+- Never commit `.env.local`.
