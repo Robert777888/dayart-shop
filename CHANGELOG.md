@@ -1,5 +1,25 @@
 # 📑 AI TEE Webshop Changelog - 2026-03-30
 
+## 2026-04-04
+### Changed
+- Tightened `codex-workflow-v1/runtime/session_logger.py` so it now refuses to write a session note without at least one `--critic` entry when policy requires critic coverage.
+- Added a `--dry-run` mode to the session logger so workflow-memory writes can be previewed safely before touching the Obsidian vault.
+- Updated the Codex workflow docs to state that critic review is a hard runtime contract for the self-improvement cycle, not just a prose guideline.
+
+### Validation
+- `python /Users/robertkispal/Documents/projects/AI_TEE_webshop/codex-workflow-v1/runtime/session_logger.py --request "Review the workflow runtime" --summary "Captured a runtime-policy mismatch and patched it" --workflow codex_skill_self_improvement_cycle --workspace /Users/robertkispal/Documents/projects/AI_TEE_webshop --status success --skill codex-skill-self-improvement-cycle --dry-run` fails with the expected missing-critic error.
+- `python /Users/robertkispal/Documents/projects/AI_TEE_webshop/codex-workflow-v1/runtime/session_logger.py --request "Review the workflow runtime" --summary "Captured a runtime-policy mismatch and patched it" --workflow codex_skill_self_improvement_cycle --workspace /Users/robertkispal/Documents/projects/AI_TEE_webshop --status success --skill codex-skill-self-improvement-cycle --critic "The runtime allowed empty critic review despite policy requiring it." --dry-run` renders a valid note.
+
+## 2026-04-03
+### Changed
+- Added shared UI tokens for soft borders, card shadows, and interactive transitions in `globals.css`, then applied them across hero, wizard, and key buttons/cards to reduce duplication.
+- Extracted wizard step titles/subtitles and phase labels into `src/components/designer/wizardCopy.ts` to keep the main component slim.
+- Simplified `useGenerator` with helper functions for payload building, step clamping, and state updates.
+
+### Validation
+- `npx tsc --noEmit`
+- `python agent/skills/lint-and-validate/scripts/lint_runner.py .`
+
 ## 2026-04-03
 ### Changed
 - Redesigned the landing hero to use a darker studio-style showcase and swapped the default visual to the black premium tee so the opening frame is no longer dominated by a white mockup.
@@ -106,3 +126,42 @@
 - **⬇️ Download Flow**: Added a direct "Design letöltése" (Download) button to the Mockup Preview for immediate user access to generated PNGs.
 - **💎 Loyalty Roadmap**: Defined the credit-based monetization model (2 free/Guest → 5 bonus/Member → Credits for purchases).
 - **🧠 Obsidian Sync (V2)**: Successfully mapped the entire project structure and the new business logic into the centralized vault.
+
+## 2026-04-04
+
+### Added
+- Created `codex-workflow-v1/` as a concrete system blueprint for turning `AGENTS.md` from prose policy into a deterministic Codex workflow design.
+- Added `codex-workflow-v1/runtime/session_logger.py`, a standard-library prototype that writes Obsidian-compatible session notes with YAML frontmatter.
+- Added `codex-workflow-v1/docs/obsidian-memory.md` describing how to build long-term analyzable memory from session notes and later distillation passes.
+- Added `codex-workflow-v1/registry/memory_profiles.json` so workflows can declare which session note format they require.
+- Added `codex-workflow-v1/runtime/distiller.py` and the distillation registry/docs layer so raw session logs can be promoted into generated knowledge notes.
+- Added `codex-workflow-v1/docs/osszefoglalo-hu.md`, a single detailed Hungarian overview document for the full system.
+- Initialized the shared Obsidian knowledge directory at `/Users/robertkispal/Obsidian/AI_memory/Codex` with the base memory folders plus the first generated notes.
+- Added `codex-workflow-v1/registry/knowledge_sources.json` to map the active Codex vault and the upstream Antigravity skill/workflow libraries.
+- Added two new clearly named automation skill definitions and docs:
+- `codex-skill-self-improvement-cycle`
+- `developer-alignment-and-agents-memory-sync`
+- Added `codex-workflow-v1/registry/automation_recipes.json` to describe the recurring maintenance and personalization automations.
+- Copied the automation notes into `/Users/robertkispal/Obsidian/AI_memory/Codex/Skills` and `/Users/robertkispal/Obsidian/AI_memory/Codex/Workflows`.
+- Added four human-readable dashboard notes to `/Users/robertkispal/Obsidian/AI_memory/Codex/Indexes` to make the central knowledge base easier to navigate.
+- Added `05-Developer-Alignment-Preferences.md` to the `Codex/Indexes` entry points for personalization guidance.
+
+### Changed
+- Extended the runtime manifests so workflows now declare `obsidian_session_note` memory hooks and a `session_log_profile`.
+- Renamed the system from `agent-runtime-v1` to `codex-workflow-v1` to make it explicit that this is a workflow layer around Codex, not a separate agent.
+- Updated the router prototype to expose memory logging requirements as part of the route decision.
+- Tightened the router keyword and complexity heuristics after verification surfaced a false positive frontend classification for an architecture request.
+- Updated the Obsidian policy defaults so the Codex workflow system now points at `/Users/robertkispal/Obsidian/AI_memory/Codex` as its canonical knowledge directory.
+- Documented the recommended role split where `Codex` is the active memory target and `Antigravity` is the shared upstream library for reusable skills and workflows.
+- Switched the new automation concepts to more descriptive names so their role is obvious in both the registry and the central knowledge vault.
+- Refined the dashboard notes so their internal links work with the `Codex` directory opened directly as a vault root.
+- Moved the session logger timestamp proposal out of `Codex/Workflows/Generated` and into `Codex/Decisions/Generated` so the vault layout matches the note intent.
+
+### Verified
+- Ran `python codex-workflow-v1/runtime/router.py "Design an agent runtime with Obsidian session memory"`.
+- Ran `python codex-workflow-v1/runtime/session_logger.py ... --vault /tmp/obsidian-vault` and confirmed the note was written successfully.
+- Ran `python codex-workflow-v1/runtime/distiller.py --vault /tmp/obsidian-vault` and confirmed generated project, decision, pattern, and index notes were created.
+- Wrote the first real session note and generated notes into `/Users/robertkispal/Obsidian/AI_memory/Codex` and confirmed the generated index resolved with the expected relative Obsidian links.
+- Validated the updated automation registry JSON files with `python -m json.tool`.
+- Verified the published dashboard notes in the central Codex `Indexes/` folder after correcting the link paths.
+- Confirmed that `Codex/Workflows/Generated` no longer contains the misplaced proposal note after the move.

@@ -1,6 +1,19 @@
 # 📝 Session Handoff - 2026-04-03 (Stitch Visual Refactor + MCP Setup)
 
+## 2026-04-04 CODEX SKILL IMPROVEMENT CYCLE
+- Reviewed the last 24 hours of notes under `/Users/robertkispal/Obsidian/AI_memory/Codex`.
+- Only one real session note existed, so there was not enough evidence for broad skill refactors or shared-library proposals.
+- The concrete defect found was a policy/runtime mismatch: the session log showed `## Critic Review` as `None recorded` even though `codex-workflow-v1/registry/policies.json` already requires critic coverage.
+- `codex-workflow-v1/runtime/session_logger.py` now blocks writes that omit `--critic` when `require_critic_before_execution` is true.
+- The session logger also has a new `--dry-run` mode for safe previewing of the rendered note before writing to the vault.
+- `codex-workflow-v1/docs/lifecycle.md`, `codex-workflow-v1/docs/automation-codex-skill-self-improvement-cycle.md`, and `codex-workflow-v1/README.md` were updated so the runtime contract and evidence threshold are explicit.
+- Writing back into `/Users/robertkispal/Obsidian/AI_memory/Codex` is currently blocked in this automation context, so the session note and distilled knowledge refresh need either a writable vault path or a rerun with broader write access.
+- Immediate next follow-up: rerun the logger and distiller against the canonical Codex vault once write access is available, then check whether the next 24-hour review surfaces real failure notes instead of just policy gaps.
+
 ## ✅ Latest Changes (2026-04-03, follow-up)
+- Added shared UI tokens for soft borders, card shadows, and interactive transitions, then reused them across hero/wizard buttons and cards to reduce CSS duplication.
+- Extracted the wizard step titles/subtitles and phase labels into `src/components/designer/wizardCopy.ts`.
+- Simplified `useGenerator` with step clamping and a single update helper for cleaner state management.
 - Added Stitch-aligned intro panels to the designer, shop, and checkout pages so the main commerce flows share one editorial layout language.
 - Reworked the footer to remove dead links and keep only live routes plus support contact details.
 - Added shared page intro chips and checkout summary cards to make the site feel more cohesive and less fragmented.
@@ -41,6 +54,7 @@
 ## ✅ What Was Validated
 - `npm run lint` passed.
 - `npx tsc --noEmit` passed.
+- `python agent/skills/lint-and-validate/scripts/lint_runner.py .` passed (no ESLint warnings).
 - `npm run build` previously failed only because `next/font` tried to fetch Google Fonts in a network-restricted environment.
 - Browser screenshot verification could not complete in this environment because Playwright Chromium hit a macOS permission error (`bootstrap_check_in ... Permission denied`).
 
@@ -128,3 +142,35 @@
 3. Open `http://localhost:3000/` and `http://localhost:3000/designer` on desktop and mobile widths.
 4. Compare the home and designer layouts against the imported Stitch references.
 5. Verify the Vercel build status on the GitHub repo.
+
+## 2026-04-04 CODEX WORKFLOW V1
+- Added a new workspace folder at `codex-workflow-v1/` as a concrete executable design derived from the repo `AGENTS.md` philosophy.
+- The design now includes an explicit Obsidian memory layer so each completed session can be exported as structured Markdown instead of remaining only in transient chat context.
+- `codex-workflow-v1/runtime/session_logger.py` writes frontmatter-based session notes into an Obsidian vault using `--vault` or `OBSIDIAN_VAULT_PATH`.
+- `codex-workflow-v1/docs/obsidian-memory.md` defines the recommended vault structure, the difference between raw session logs and distilled knowledge, and the minimum fields required for later analysis.
+- `codex-workflow-v1/docs/osszefoglalo-hu.md` is the single detailed Hungarian overview document that explains the system as a Codex workflow layer rather than a separate agent.
+- The router prototype now exposes `session_log_profile` and `obsidian_logging_required` so memory becomes part of workflow selection rather than an optional afterthought.
+- Verification confirmed both the route selection and an end-to-end sample note write into `/tmp/obsidian-vault`.
+- Added a second-stage distillation design so raw session logs can later be promoted into reusable decisions, failures, patterns, and project facts.
+- Verified the distiller against the temp vault and confirmed generated project, decision, pattern, and index notes are being created.
+- The canonical shared knowledge directory is now `/Users/robertkispal/Obsidian/AI_memory/Codex`.
+- That central Codex directory has been initialized with `Sessions`, `Projects/Generated`, `Decisions/Generated`, `Patterns/Generated`, `Failures/Generated`, `Indexes/Generated`, `Workflows`, and `Skills`.
+- A starter session note, generated index, generated project note, generated decision notes, generated workflow pattern note, and the Hungarian overview note have already been written there.
+- The local `codex-workflow-v1` policies now default to that central directory, so future session logging and distillation can target it directly.
+- Existing upstream shared libraries were discovered at `/Users/robertkispal/Obsidian/AI_memory/Antigravity/SKILLS` and `/Users/robertkispal/Obsidian/AI_memory/Antigravity/WORKFLOWS`.
+- Those Antigravity directories should be treated as reference-only shared libraries, while `/Users/robertkispal/Obsidian/AI_memory/Codex` remains the read-write active memory and generated knowledge target.
+- `codex-workflow-v1/registry/knowledge_sources.json` now records this split explicitly so the workflow system has a canonical map of where to read and where to write.
+- Added two clearly named automation-oriented skills to the local Codex workflow layer:
+- `codex-skill-self-improvement-cycle`
+- `developer-alignment-and-agents-memory-sync`
+- Added local documentation for both automations plus `codex-workflow-v1/registry/automation_recipes.json`.
+- Copied the new automation notes into the central Codex knowledge directory under `Skills/` and `Workflows/` so they are visible from the shared Obsidian hub.
+- Added human-facing dashboard notes to `/Users/robertkispal/Obsidian/AI_memory/Codex/Indexes`:
+- `01-Codex-Start-Here.md`
+- `02-Codex-Command-Center.md`
+- `03-Shared-References.md`
+- `04-Automation-Control-Center.md`
+- `05-Developer-Alignment-Preferences.md`
+- Corrected the dashboard link strategy so internal links work when the `Codex` directory itself is opened as the vault root.
+- Moved the misfiled `proposal-session-logger-single-timestamp.md` note into `Decisions/Generated` as `decision-session-logger-single-timestamp.md`.
+- The central `Codex/Workflows/Generated` folder is now empty again, which keeps workflow notes reserved for actual workflow references rather than proposal artifacts.

@@ -10,6 +10,7 @@ import {
   StepStyle,
   StepSizeAndCart,
 } from "@/components/designer/steps";
+import { WIZARD_PHASE_LABELS, WIZARD_STEP_SUBTITLES, WIZARD_STEP_TITLES } from "@/components/designer/wizardCopy";
 
 interface WizardProps {
   occasion: string;
@@ -39,31 +40,7 @@ interface WizardProps {
   onReset: () => void;
 }
 
-const STEP_TITLES: Record<WizardStep, string> = {
-  1: "Mit tervezünk?",
-  2: "Kinek és mire?",
-  3: "Mi legyen rajta?",
-  4: "Hogyan épüljön fel?",
-  5: "Milyen stílusban?",
-  6: "Méretezés és kosár",
-};
-
-const STEP_SUBTITLES: Record<WizardStep, string> = {
-  1: "Először válaszd ki a terméket és a színt, hogy a mockup már az elején jó legyen.",
-  2: "Adj meg néhány alapadatot – ez segít igazán személyessé tenni a designt.",
-  3: "Írd le, mi legyen a fő motívum vagy téma.",
-  4: "Csak szöveg, csak grafika, vagy a kettő együtt?",
-  5: "Válaszd ki a vizuális stílust, ami legjobban illik a témához.",
-  6: "A design kész! Most válaszd ki a méretet, és mehet a kosárba.",
-};
-
-const PHASE_MESSAGES: Record<GenerationPhase, string> = {
-  idle: "",
-  prompting: "Threads & Ink koncepció kidolgozása...",
-  generating: "Prémium grafika szintézise...",
-  polishing: "Művészi simítások alkalmazása...",
-  uploading: "Nyomtatási sablon előkészítése...",
-};
+const DESIGN_STEPS: WizardStep[] = [1, 2, 3, 4, 5];
 
 // --- Main Wizard ---
 export function DesignWizard({
@@ -93,7 +70,6 @@ export function DesignWizard({
   onGenerate,
   onReset,
 }: WizardProps) {
-  const designSteps = [1, 2, 3, 4, 5] as WizardStep[];
   const isProductStep = wizardStep === 6;
 
   return (
@@ -106,7 +82,7 @@ export function DesignWizard({
 
       {!isProductStep && (
         <div className="stepper" role="progressbar" aria-valuenow={wizardStep} aria-valuemax={5}>
-          {designSteps.map((step) => (
+          {DESIGN_STEPS.map((step) => (
             <div
               key={step}
               className={`stepper-item ${wizardStep >= step ? "active" : ""} ${wizardStep === step ? "current" : ""}`}
@@ -125,8 +101,8 @@ export function DesignWizard({
       )}
 
       <div className="step-header">
-        <h2 className="step-title">{STEP_TITLES[wizardStep]}</h2>
-        <p className="step-subtitle">{STEP_SUBTITLES[wizardStep]}</p>
+        <h2 className="step-title">{WIZARD_STEP_TITLES[wizardStep]}</h2>
+        <p className="step-subtitle">{WIZARD_STEP_SUBTITLES[wizardStep]}</p>
       </div>
 
       {wizardStep === 1 && (
@@ -165,7 +141,7 @@ export function DesignWizard({
           onGenerate={onGenerate}
           onPrev={onPrevStep}
           isLoading={isLoading}
-          phaseLabel={PHASE_MESSAGES[phase]}
+          phaseLabel={WIZARD_PHASE_LABELS[phase]}
         />
       )}
       {wizardStep === 6 && (

@@ -8,6 +8,8 @@ export type GenerationPhase = 'idle' | 'prompting' | 'generating' | 'polishing' 
 export type WizardStep = 1 | 2 | 3 | 4 | 5 | 6;
 export type ProductType = "tshirt" | "sweatshirt";
 export type ProductColor = "black" | "white";
+const MIN_STEP: WizardStep = 1;
+const MAX_STEP: WizardStep = 6;
 
 export interface GeneratorState {
   occasion: string;
@@ -26,6 +28,22 @@ export interface GeneratorState {
   phase: GenerationPhase;
   error: string | null;
 }
+
+const clampStep = (value: number): WizardStep => {
+  if (value < MIN_STEP) return MIN_STEP;
+  if (value > MAX_STEP) return MAX_STEP;
+  return value as WizardStep;
+};
+
+type PayloadSource = Pick<GeneratorState, "occasion" | "recipient" | "motif" | "style" | "contentType">;
+
+const buildPayload = (source: PayloadSource): GeneratePayload => ({
+  occasion: source.occasion,
+  recipient: source.recipient,
+  motif: source.motif,
+  style: source.style,
+  contentType: source.contentType,
+});
 
 const INITIAL_STATE: GeneratorState = {
   occasion: "",
@@ -46,60 +64,66 @@ const INITIAL_STATE: GeneratorState = {
 export function useGenerator() {
   const [state, setState] = useState<GeneratorState>(INITIAL_STATE);
 
-  const setOccasion = useCallback((value: string) => {
-    setState((prev) => ({ ...prev, occasion: value, error: null }));
+  const applyUpdates = useCallback((updates: Partial<GeneratorState>) => {
+    setState((prev) => ({ ...prev, ...updates, error: null }));
   }, []);
+
+  const setOccasion = useCallback((value: string) => {
+    applyUpdates({ occasion: value });
+  }, [applyUpdates]);
 
   const setRecipient = useCallback((value: string) => {
-    setState((prev) => ({ ...prev, recipient: value, error: null }));
-  }, []);
+    applyUpdates({ recipient: value });
+  }, [applyUpdates]);
 
   const setMotif = useCallback((value: string) => {
-    setState((prev) => ({ ...prev, motif: value, error: null }));
-  }, []);
+    applyUpdates({ motif: value });
+  }, [applyUpdates]);
 
   const setStyle = useCallback((value: string) => {
-    setState((prev) => ({ ...prev, style: value, error: null }));
-  }, []);
+    applyUpdates({ style: value });
+  }, [applyUpdates]);
 
   const setContentType = useCallback((value: ContentType) => {
-    setState((prev) => ({ ...prev, contentType: value, error: null }));
-  }, []);
+    applyUpdates({ contentType: value });
+  }, [applyUpdates]);
 
   const setProductType = useCallback((value: ProductType) => {
-    setState((prev) => ({ ...prev, productType: value, error: null }));
-  }, []);
+    applyUpdates({ productType: value });
+  }, [applyUpdates]);
 
   const setProductColor = useCallback((value: ProductColor) => {
-    setState((prev) => ({ ...prev, productColor: value, error: null }));
-  }, []);
+    applyUpdates({ productColor: value });
+  }, [applyUpdates]);
 
   const setProductSize = useCallback((value: string) => {
-    setState((prev) => ({ ...prev, productSize: value, error: null }));
-  }, []);
+    applyUpdates({ productSize: value });
+  }, [applyUpdates]);
 
   const goToStep = useCallback((step: WizardStep) => {
-    setState((prev) => ({ ...prev, wizardStep: step, error: null }));
-  }, []);
+    applyUpdates({ wizardStep: step });
+  }, [applyUpdates]);
 
   const nextStep = useCallback(() => {
     setState((prev) => {
-      const next = Math.min(prev.wizardStep + 1, 6) as WizardStep;
+      const next = clampStep(prev.wizardStep + 1);
       return { ...prev, wizardStep: next, error: null };
     });
   }, []);
 
   const prevStep = useCallback(() => {
     setState((prev) => {
-      const prev2 = Math.max(prev.wizardStep - 1, 1) as WizardStep;
-      return { ...prev, wizardStep: prev2, error: null };
+      const prevStepValue = clampStep(prev.wizardStep - 1);
+      return { ...prev, wizardStep: prevStepValue, error: null };
     });
   }, []);
 
   const handleGenerate = useCallback(async () => {
-    if (state.isLoading) return;
+    const { occasion, recipient, motif, style, contentType, isLoading } = state;
 
-    if (!state.occasion || !state.recipient || !state.motif || !state.style) {
+    if (isLoading) return;
+
+    if (!occasion || !recipient || !motif || !style) {
       setState((prev) => ({
         ...prev,
         error: "Kérjük, töltsd ki az összes mezőt a generálás előtt.",
@@ -112,13 +136,7 @@ export function useGenerator() {
     setState((prev) => ({ ...prev, phase: 'generating' }));
 
     try {
-      const payload: GeneratePayload = {
-        occasion: state.occasion,
-        recipient: state.recipient,
-        motif: state.motif,
-        style: state.style,
-        contentType: state.contentType,
-      };
+      const payload = buildPayload({ occasion, recipient, motif, style, contentType });
 
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -157,7 +175,7 @@ export function useGenerator() {
         error: "Hálózati hiba. Kérjük, ellenőrizd az internetkapcsolatodat.",
       }));
     }
-  }, [state.occasion, state.style, state.recipient, state.motif, state.contentType, state.isLoading]);
+  }, [state]);
 
   const resetWizard = useCallback(() => {
     setState(INITIAL_STATE);
