@@ -83,8 +83,9 @@ This file is the single place to resume work in a new window or session.
 - Use Obsidian session logging for long-term memory.
 
 ## Obsidian Session Notes
-- Vault: `/Users/robertkispal/Obsidian/AI_memory/Codex`
-- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-04_113512-session-codex-workflow-ttekint-s-a-t-r-lt-agent-dokument.md`
+- Base path: `/Users/robertkispal/Obsidian/AI_memory`
+- Codex folder: `/Users/robertkispal/Obsidian/AI_memory/Codex`
+- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-04_115142-session-obsidian-base-path-friss-t-se.md`
 
 ## Immediate Next Steps
 - Decide whether to restore or replace the deleted memory hook files.

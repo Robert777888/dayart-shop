@@ -6,6 +6,7 @@
 - Obsidian session logging is mandatory per Codex Workflow.
 - `codex-workflow-v1/` is present locally and must remain untracked.
 - Canonical scaffolding added: `.agent/`, plus root `directives/` and `execution/`.
+- Obsidian base path: `/Users/robertkispal/Obsidian/AI_memory` (Codex subfolder used).
 
 ## Current Risks / Gaps
 - Canonical `.agent/` structure is not yet fully populated with real directives or execution scripts.

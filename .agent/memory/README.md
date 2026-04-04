@@ -5,5 +5,8 @@ Local memory hooks live in the project root:
 - `CARRYOVER.md`
 - `CHANGELOG.md`
 
-Obsidian long-term memory lives in:
+Obsidian base path:
+`/Users/robertkispal/Obsidian/AI_memory`
+
+Codex folder:
 `/Users/robertkispal/Obsidian/AI_memory/Codex`

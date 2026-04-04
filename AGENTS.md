@@ -7,6 +7,7 @@
 ## Codex Workflow V1
 - Reference docs: `codex-workflow-v1/docs/`.
 - The workflow folder stays **untracked** and must not be pushed to GitHub.
+ - Obsidian base path: `/Users/robertkispal/Obsidian/AI_memory` (Codex lives inside).
 
 ## Minimal Runtime Contract
 - Use planning for any multi-step work.
