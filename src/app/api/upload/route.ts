@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
         rawAssetId: rawAssetId ?? null,
         cloudinaryPublicId: processedResult.asset.publicId,
         cloudinaryUrl: processedResult.asset.secureUrl,
-        status: processedResult.backgroundRemoval ? "processed" : "fallback",
+        status: "processed",
       }) ?? undefined;
 
       generationId = await saveGeneration({

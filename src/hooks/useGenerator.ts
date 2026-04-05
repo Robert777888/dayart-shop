@@ -10,6 +10,7 @@ export type ProductType = "tshirt" | "sweatshirt";
 export type ProductColor = "black" | "white";
 const MIN_STEP: WizardStep = 1;
 const MAX_STEP: WizardStep = 6;
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export interface GeneratorState {
   occasion: string;
@@ -138,8 +139,19 @@ export function useGenerator() {
     }
 
     setState((prev) => ({ ...prev, isLoading: true, phase: 'prompting', error: null }));
-    await new Promise(r => setTimeout(r, 800));
+    await delay(700);
     setState((prev) => ({ ...prev, phase: 'generating' }));
+
+    const phaseTimers: Array<ReturnType<typeof setTimeout>> = [];
+    const queuePhaseShift = (ms: number, nextPhase: Exclude<GenerationPhase, "idle">) => {
+      const timer = setTimeout(() => {
+        setState((prev) => (prev.isLoading ? { ...prev, phase: nextPhase } : prev));
+      }, ms);
+      phaseTimers.push(timer);
+    };
+
+    queuePhaseShift(2500, "polishing");
+    queuePhaseShift(6500, "uploading");
 
     try {
       const payload = buildPayload({ occasion, recipient, motif, style, contentType });
@@ -151,9 +163,6 @@ export function useGenerator() {
       });
 
       const data: GenerateResponse = await response.json();
-
-      setState((prev) => ({ ...prev, phase: 'polishing' }));
-      await new Promise(r => setTimeout(r, 600));
 
       if (!data.success || !data.designUrl) {
         setState((prev) => ({
@@ -183,6 +192,8 @@ export function useGenerator() {
         phase: 'idle',
         error: "Hálózati hiba. Kérjük, ellenőrizd az internetkapcsolatodat.",
       }));
+    } finally {
+      phaseTimers.forEach((timer) => clearTimeout(timer));
     }
   }, [state]);
 

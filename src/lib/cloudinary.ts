@@ -104,36 +104,19 @@ export async function uploadProcessedAsset(
 ): Promise<{ asset: CloudinaryAsset; backgroundRemoval: boolean }> {
   const client = getCloudinary();
   const dataUri = `data:image/png;base64,${base64Image}`;
+  // Intentionally disabled: background removal produced unstable results on designs.
+  const result: UploadApiResponse = await client.uploader.upload(dataUri, {
+    folder: "ai-tee/processed",
+    resource_type: "image",
+    quality: "auto",
+    fetch_format: "png",
+  });
 
-  try {
-    const result: UploadApiResponse = await client.uploader.upload(dataUri, {
-      folder: "ai-tee/processed",
-      resource_type: "image",
-      quality: "auto",
-      fetch_format: "png",
-      transformation: [{ effect: "background_removal" }],
-    });
-
-    if (!result.secure_url) {
-      throw new Error("Cloudinary upload succeeded but returned no secure_url.");
-    }
-
-    return { asset: mapUploadResult(result), backgroundRemoval: true };
-  } catch (error) {
-    console.warn("[Cloudinary] Background removal failed, falling back to plain upload.", error);
-    const fallbackResult: UploadApiResponse = await client.uploader.upload(dataUri, {
-      folder: "ai-tee/processed",
-      resource_type: "image",
-      quality: "auto",
-      fetch_format: "png",
-    });
-
-    if (!fallbackResult.secure_url) {
-      throw new Error("Cloudinary upload succeeded but returned no secure_url.");
-    }
-
-    return { asset: mapUploadResult(fallbackResult), backgroundRemoval: false };
+  if (!result.secure_url) {
+    throw new Error("Cloudinary upload succeeded but returned no secure_url.");
   }
+
+  return { asset: mapUploadResult(result), backgroundRemoval: false };
 }
 
 export { hasCloudinaryConfig };

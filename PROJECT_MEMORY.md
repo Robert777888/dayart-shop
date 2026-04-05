@@ -32,13 +32,26 @@ This file is the single place to resume work in a new window or session.
 - Verified UI flow in dev server via Playwright: wizard steps 1–5 work; `/api/generate` completes but can take ~59s (generation phase visible in UI).
 - Added selection/cart/checkout APIs and Supabase helpers; wizard now saves selections + cart items (best-effort) and checkout writes orders + order items.
 - Added mockup endpoint and Cloudinary overlay URL generation (uses optional mockup base public IDs).
+- Wrote an Obsidian project summary note: /Users/robertkispal/Obsidian/AI_memory/Codex/Projects/Generated/project-ai-tee-webshop.md
 - The central alignment note now captures `session logger` and the raw-to-generated memory loop.
 - Project `AGENTS.md` edits remain centralized until the pattern is clearly stable and low-risk.
+- The 2026-04-05 alignment sync rechecked recent notes, reinforced the concise/direct/action-first preference, and kept AGENTS edits centralized instead of promoting a repo-local change.
+- The latest session note in the writable mirror is `/Users/robertkispal/Documents/projects/AI_TEE_webshop/.tmp/obsidian-vault/Codex/Sessions/2026/04/2026-04-05_155801-session-review-recent-codex-session-notes-and-communicat.md`.
+- The self-improvement workflow now treats one-off latency or stall reports as memory-worthy when the session names the slow step and impact.
+- The distiller now surfaces `Observed Friction` in workflow pattern notes when sessions mention slow, stalled, or timeout-prone steps.
+- The canonical Obsidian vault at `/Users/robertkispal/Obsidian/AI_memory/Codex` now has the synced session note and generated knowledge from this run.
+- UX tuning (2026-04-05): the designer mockup print area was enlarged so generated art appears visibly bigger on apparel previews (`tshirt`: 54%, `sweatshirt`: 56% print-area width in `MockupPreview`).
+- UX tuning (2026-04-05): generation now shows live customer feedback in the preview (phase timeline, elapsed seconds, progress bar, rotating status hint) instead of a passive spinner-only state.
+- Generation phase flow in `useGenerator` now advances through `prompting -> generating -> polishing -> uploading` with timed state shifts while async generation is running, then clears timers safely on completion/error.
+- Cloudinary background removal is now explicitly disabled in the processed upload path due severe output quality regressions; `uploadProcessedAsset` performs plain upload only.
+- API persistence in `/api/generate` and `/api/upload` now stores processed assets with `status: "processed"` (no longer tagging normal flow as `fallback` when background removal is intentionally off).
 
 ## Current Git Status (Summary)
 - Modified: `.gitignore`, `AGENTS.md`, `CARRYOVER.md`, `CHANGELOG.md`, `ENVIRONMENT_VARS.txt`, `SKILL_INDEX.md`, `PROJECT_MEMORY.md`.
 - Added: `.agent/` scaffold, `directives/`, `execution/`.
 - Not yet committed/pushed.
+- The repo-local workflow docs are the safe source of truth for the latest Codex memory changes until the canonical Obsidian vault is writable again.
+- The canonical Obsidian vault sync has been completed for this run.
 
 ## Core Flows
 - Landing: `/` (hero + featured products + CTA).
@@ -79,6 +92,8 @@ This file is the single place to resume work in a new window or session.
 ## Validation
 - Lint: `npm run lint` (2026-04-04)
 - Typecheck: `npx tsc --noEmit`
+- Lint: `npm run lint` (2026-04-05) ✅
+- Build + TS validation: `npm run build` (2026-04-05) ✅
 
 ## Deployment
 - GitHub remote: `https://github.com/Robert777888/dayart-shop`
@@ -96,8 +111,8 @@ This file is the single place to resume work in a new window or session.
 - Codex folder: `/Users/robertkispal/Obsidian/AI_memory/Codex`
 - Environment: set `OBSIDIAN_VAULT_PATH=/Users/robertkispal/Obsidian/AI_memory`
 - Recommended logger: `bash execution/session_logger.sh ...`
-- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-04_131025-session-vilagos-bezs-premium-tema-az-egesz-webshopon-sot.md`
-- Canonical vault write was sandbox-blocked this run; fallback session note and distilled notes were written to `.tmp/obsidian-vault/Codex/...`.
+- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-05_161736-session-kapcsoljuk-ki-a-cloudinary-h-tt-r-elt-vol-t-st-m.md`
+- If canonical vault writes are blocked in a future run, use the writable `.tmp/obsidian-vault/Codex/...` fallback to preserve memory continuity.
 
 ## Immediate Next Steps
 - Review beige theme on `/`, `/shop`, `/shop/[id]`, `/designer`, `/checkout`, `/shipping` and flag any layout tweaks.
@@ -112,3 +127,6 @@ This file is the single place to resume work in a new window or session.
 - Consider mockup endpoint for Cloudinary overlays if/when base mockups are uploaded.
 - Upload base mockup images to Cloudinary and set `CLOUDINARY_MOCKUP_*_PUBLIC_ID` in `.env.local` to enable overlay previews.
 - Regenerate distilled Codex knowledge after the next Obsidian session note write so the generated memory stays in sync.
+- If canonical Obsidian writes are blocked again, use the writable `.tmp/obsidian-vault` mirror so the session-note/distillation contract still completes.
+- Keep future AGENTS guidance proposals centralized unless the same rule repeats in another project.
+- If the canonical Codex vault stays blocked, use the `.tmp/obsidian-vault` fallback for the session note and distillation run.
