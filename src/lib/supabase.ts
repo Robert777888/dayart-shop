@@ -387,3 +387,251 @@ export async function saveMockupAsset(params: {
 
   return data.id;
 }
+
+export interface CustomerProfileInput {
+  userId: string;
+  email: string;
+  fullName?: string | null;
+  phone?: string | null;
+}
+
+export async function upsertCustomerProfile(params: CustomerProfileInput): Promise<boolean> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping customer profile upsert.");
+    return false;
+  }
+
+  const { error } = await supabase.from("customer_profiles").upsert(
+    {
+      id: params.userId,
+      email: params.email,
+      full_name: params.fullName ?? null,
+      phone: params.phone ?? null,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "id" }
+  );
+
+  if (error) {
+    console.error("[Supabase] Failed to upsert customer profile:", error.message);
+    return false;
+  }
+
+  return true;
+}
+
+export async function getCustomerProfile(userId: string): Promise<{
+  email: string;
+  fullName: string | null;
+  phone: string | null;
+} | null> {
+  const supabase = getSupabase();
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from("customer_profiles")
+    .select("email, full_name, phone")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[Supabase] Failed to get customer profile:", error.message);
+    return null;
+  }
+
+  if (!data) return null;
+
+  return {
+    email: data.email,
+    fullName: data.full_name,
+    phone: data.phone,
+  };
+}
+
+export interface ShippingAddressInput {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  country: string;
+  zip: string;
+  city: string;
+  addressLine1: string;
+  comment?: string | null;
+}
+
+export async function saveShippingAddress(params: ShippingAddressInput): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping shipping address save.");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("shipping_addresses")
+    .insert({
+      user_id: params.userId,
+      first_name: params.firstName,
+      last_name: params.lastName,
+      email: params.email,
+      phone: params.phone,
+      country: params.country,
+      zip: params.zip,
+      city: params.city,
+      address_line1: params.addressLine1,
+      comment: params.comment ?? null,
+      is_default: true,
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("[Supabase] Failed to save shipping address:", error.message);
+    return null;
+  }
+
+  return data.id;
+}
+
+export async function attachOrderFulfillment(orderId: string): Promise<boolean> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    console.warn("[Supabase] Client not initialized. Skipping fulfillment attach.");
+    return false;
+  }
+
+  const { error } = await supabase
+    .from("order_fulfillment")
+    .upsert(
+      {
+        order_id: orderId,
+        status: "new",
+        production_status: "pending",
+      },
+      { onConflict: "order_id" }
+    );
+
+  if (error) {
+    console.error("[Supabase] Failed to attach fulfillment:", error.message);
+    return false;
+  }
+
+  return true;
+}
+
+export async function listAdminOrders(params?: {
+  status?: string;
+  query?: string;
+  limit?: number;
+}): Promise<Array<Record<string, unknown>>> {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+
+  const limit = params?.limit ?? 100;
+  let q = supabase
+    .from("admin_orders_overview")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (params?.status) {
+    q = q.eq("fulfillment_status", params.status);
+  }
+
+  if (params?.query) {
+    q = q.or(
+      `order_ref.ilike.%${params.query}%,email.ilike.%${params.query}%,full_name.ilike.%${params.query}%,phone.ilike.%${params.query}%`
+    );
+  }
+
+  const { data, error } = await q;
+  if (error) {
+    console.error("[Supabase] Failed to list admin orders:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+export async function updateOrderFulfillment(params: {
+  orderId: string;
+  status: string;
+  productionStatus?: string | null;
+  internalNote?: string | null;
+  shippingCarrier?: string | null;
+  shippingTrackingCode?: string | null;
+}): Promise<boolean> {
+  const supabase = getSupabase();
+  if (!supabase) return false;
+
+  const now = new Date().toISOString();
+  const payload: Record<string, unknown> = {
+    order_id: params.orderId,
+    status: params.status,
+    production_status: params.productionStatus ?? "pending",
+    internal_note: params.internalNote ?? null,
+    shipping_carrier: params.shippingCarrier ?? null,
+    shipping_tracking_code: params.shippingTrackingCode ?? null,
+    updated_at: now,
+  };
+
+  if (params.status === "shipped") {
+    payload.shipped_at = now;
+  }
+
+  const { error } = await supabase
+    .from("order_fulfillment")
+    .upsert(payload, { onConflict: "order_id" });
+
+  if (error) {
+    console.error("[Supabase] Failed to update fulfillment:", error.message);
+    return false;
+  }
+
+  return true;
+}
+
+export async function isAdminUser(userId: string): Promise<boolean> {
+  const supabase = getSupabase();
+  if (!supabase) return false;
+
+  const { data, error } = await supabase
+    .from("customer_profiles")
+    .select("is_admin")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[Supabase] Failed to check admin role:", error.message);
+    return false;
+  }
+
+  return Boolean(data?.is_admin);
+}
+
+export async function insertAdminAuditLog(params: {
+  actorUserId: string | null;
+  action: string;
+  targetType: string;
+  targetId: string;
+  payload?: Record<string, unknown> | null;
+}): Promise<boolean> {
+  const supabase = getSupabase();
+  if (!supabase) return false;
+
+  const { error } = await supabase.from("admin_audit_logs").insert({
+    actor_user_id: params.actorUserId,
+    action: params.action,
+    target_type: params.targetType,
+    target_id: params.targetId,
+    payload_json: params.payload ?? null,
+  });
+
+  if (error) {
+    console.error("[Supabase] Failed to insert admin audit log:", error.message);
+    return false;
+  }
+
+  return true;
+}

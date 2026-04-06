@@ -177,3 +177,114 @@ create policy "Service role insert orders" on orders
 
 create policy "Service role insert order items" on order_items
   for insert with check (true);
+
+-- Customer + fulfillment admin extension
+create table if not exists customer_profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  email text not null,
+  full_name text,
+  phone text,
+  is_admin boolean not null default false
+);
+alter table customer_profiles add column if not exists is_admin boolean not null default false;
+
+create table if not exists shipping_addresses (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now(),
+  user_id uuid references auth.users(id) on delete cascade,
+  first_name text not null,
+  last_name text not null,
+  email text not null,
+  phone text not null,
+  country text,
+  zip text,
+  city text,
+  address_line1 text,
+  comment text,
+  is_default boolean default false
+);
+
+create table if not exists order_fulfillment (
+  id uuid primary key default gen_random_uuid(),
+  order_id uuid unique references orders(id) on delete cascade,
+  status text not null default 'new',
+  production_status text not null default 'pending',
+  internal_note text,
+  shipping_carrier text,
+  shipping_tracking_code text,
+  packed_at timestamptz,
+  shipped_at timestamptz,
+  delivered_at timestamptz,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists admin_audit_logs (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now(),
+  actor_user_id uuid references auth.users(id) on delete set null,
+  action text not null,
+  target_type text not null,
+  target_id text not null,
+  payload_json jsonb
+);
+
+alter table customer_profiles enable row level security;
+alter table shipping_addresses enable row level security;
+alter table order_fulfillment enable row level security;
+alter table admin_audit_logs enable row level security;
+
+create policy "Service role insert customer profiles" on customer_profiles
+  for insert with check (true);
+create policy "Service role update customer profiles" on customer_profiles
+  for update using (true) with check (true);
+
+create policy "Users read own customer profile" on customer_profiles
+  for select using (auth.uid() = id);
+
+create policy "Service role insert shipping addresses" on shipping_addresses
+  for insert with check (true);
+create policy "Users read own shipping addresses" on shipping_addresses
+  for select using (auth.uid() = user_id);
+
+create policy "Service role manage fulfillment" on order_fulfillment
+  for all using (true) with check (true);
+
+create policy "Service role insert admin audit logs" on admin_audit_logs
+  for insert with check (true);
+
+create or replace view admin_orders_overview as
+select
+  o.id as order_id,
+  o.id::text as order_ref,
+  o.created_at,
+  o.total_cents,
+  o.currency,
+  o.status as order_status,
+  f.status as fulfillment_status,
+  f.production_status,
+  f.internal_note,
+  f.shipping_tracking_code,
+  f.shipping_carrier,
+  cp.email,
+  cp.full_name,
+  cp.phone,
+  sa.city,
+  sa.address_line1,
+  (
+    select count(*)::int
+    from order_items oi
+    where oi.order_id = o.id
+  ) as item_count
+from orders o
+left join order_fulfillment f on f.order_id = o.id
+left join customer_profiles cp on cp.id = o.user_id
+left join lateral (
+  select city, address_line1
+  from shipping_addresses s
+  where s.user_id = o.user_id
+  order by s.created_at desc
+  limit 1
+) sa on true;

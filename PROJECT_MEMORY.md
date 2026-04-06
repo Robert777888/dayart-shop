@@ -20,6 +20,25 @@ This file is the single place to resume work in a new window or session.
 3. Keep `codex-workflow-v1/` untracked unless explicitly requested.
 
 ## Current State (2026-04-04)
+- Customer + admin operations MVP shipped on 2026-04-06:
+  - Customer account page at `/account` with Supabase auth (register/login) and profile persistence (name, phone, email).
+  - Customer profile API added: `GET/POST /api/customer/profile` (Bearer token required).
+  - Checkout now uses optional logged-in session token and sends customer shipping/contact data to backend.
+  - Checkout API now links authenticated user to order (`orders.user_id`), upserts `customer_profiles`, stores `shipping_addresses`, and auto-creates `order_fulfillment`.
+  - Admin operations APIs added:
+    - `GET /api/admin/orders` (x-admin-key protected)
+    - `PATCH /api/admin/orders/[orderId]` (x-admin-key protected)
+  - Admin UI added at `/admin/fulfillment` for order list, filtering, notes, tracking, and fulfillment status updates.
+  - Supabase schema extended with `customer_profiles`, `shipping_addresses`, `order_fulfillment`, and `admin_orders_overview`.
+  - Added `ADMIN_PANEL_KEY` to `.env.example`.
+- Admin security hardening pass completed on 2026-04-06:
+  - Added role-aware admin authorization helper in [adminAuth.ts](/Users/robertkispal/Documents/projects/AI_TEE_webshop/src/lib/adminAuth.ts).
+  - Admin APIs now accept either `x-admin-key` or Bearer token for a Supabase user marked `customer_profiles.is_admin = true`.
+  - Added audit trail write path via `admin_audit_logs` for fulfillment status updates.
+  - Supabase schema includes `is_admin` on `customer_profiles` and `admin_audit_logs` table with RLS policy.
+- Verification for customer/admin MVP:
+  - `npm run lint` ✅
+  - `npx tsc --noEmit` ✅
 - Template Studio vertical slice shipped on 2026-04-06 as a parallel flow to the existing AI generator.
 - New route `/templates` provides guided, slot-based personalization with 3 active templates:
   - `vintage_year_badge`

@@ -13,6 +13,8 @@ export function Navbar() {
   const navLinks = [
     { href: "/designer", label: "Tervező" },
     { href: "/templates", label: "Sablonok" },
+    { href: "/account", label: "Fiokom" },
+    { href: "/admin/fulfillment", label: "Admin" },
     { href: "/shop", label: "Kollekció" },
     { href: "/shipping", label: "Szállítás" },
   ];

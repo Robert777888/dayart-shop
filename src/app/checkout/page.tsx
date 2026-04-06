@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { SHIPPING_INFO } from "@/data/products";
+import { supabaseBrowser } from "@/lib/supabaseClient";
 import type { CheckoutResponse } from "@/types";
 
 type CheckoutStep = "cart" | "shipping" | "payment" | "confirm";
@@ -34,6 +35,39 @@ export default function CheckoutPage() {
   const [orderNum, setOrderNum] = useState(() => `TI-${Date.now().toString(36).toUpperCase()}`);
   const [isPlacing, setIsPlacing] = useState(false);
   const [placeError, setPlaceError] = useState<string | null>(null);
+  const [sessionToken, setSessionToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const boot = async () => {
+      const { data } = await supabaseBrowser.auth.getSession();
+      const token = data.session?.access_token ?? null;
+      setSessionToken(token);
+      if (!token) return;
+
+      try {
+        const response = await fetch("/api/customer/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json();
+        if (data.success && data.profile) {
+          const fullName = String(data.profile.fullName || "").trim();
+          const [firstName = "", ...rest] = fullName.split(" ");
+          const lastName = rest.join(" ");
+          setForm((prev) => ({
+            ...prev,
+            firstName: prev.firstName || firstName,
+            lastName: prev.lastName || lastName,
+            email: prev.email || data.profile.email || "",
+            phone: prev.phone || data.profile.phone || "",
+          }));
+        }
+      } catch (profileError) {
+        console.warn("[Checkout] profile prefill failed", profileError);
+      }
+    };
+
+    boot();
+  }, []);
 
   const shipping = SHIPPING_INFO[form.shippingMethod];
   const shippingCost = totalPrice >= 20000 ? 0 : shipping.price;
@@ -54,7 +88,10 @@ export default function CheckoutPage() {
     try {
       const response = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {}),
+        },
         body: JSON.stringify({
           items: state.items.map((item) => ({
             selectionId: item.selectionId ?? null,
@@ -63,6 +100,17 @@ export default function CheckoutPage() {
           })),
           total: grandTotal,
           currency: "HUF",
+          customer: {
+            firstName: form.firstName,
+            lastName: form.lastName,
+            email: form.email,
+            phone: form.phone,
+            country: form.country,
+            zip: form.zip,
+            city: form.city,
+            address: form.address,
+            comment: form.comment,
+          },
         }),
       });
 
