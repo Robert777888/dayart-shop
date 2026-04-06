@@ -1297,3 +1297,219 @@ img { max-width: 100%; display: block; }
   .product-summary-band { flex-direction: column; align-items: flex-start; }
   .generation-step-list { grid-template-columns: 1fr; max-width: 220px; }
 }
+
+/* ===== TEMPLATE STUDIO ===== */
+.template-studio-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.template-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.template-panel {
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.template-panel h2 {
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.template-panel p {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.template-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.template-card {
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-bg-alt);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  transition: var(--transition-interactive);
+}
+
+.template-card:hover:not(:disabled) {
+  border-color: var(--color-border-active);
+  transform: translateY(-1px);
+}
+
+.template-card:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.template-card.selected {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-glow);
+  background: rgba(183, 133, 85, 0.08);
+}
+
+.template-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.template-card-top strong {
+  font-size: 0.92rem;
+}
+
+.template-chip {
+  font-size: 0.7rem;
+  border-radius: 999px;
+  padding: 2px 8px;
+  border: 1px solid transparent;
+  font-weight: 700;
+}
+
+.template-chip.active {
+  background: rgba(47, 107, 63, 0.12);
+  border-color: rgba(47, 107, 63, 0.32);
+  color: #2f6b3f;
+}
+
+.template-chip.soon {
+  background: rgba(168, 106, 23, 0.12);
+  border-color: rgba(168, 106, 23, 0.35);
+  color: #a86a17;
+}
+
+.template-meta-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+}
+
+.template-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.template-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.template-form-grid input,
+.template-form-grid select {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  color: var(--color-text-primary);
+}
+
+.template-generate {
+  width: 100%;
+}
+
+.template-error {
+  font-size: 0.84rem;
+  color: var(--color-error);
+  background: var(--color-error-bg);
+  border: 1px solid rgba(196, 75, 95, 0.3);
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.family-members-wrap {
+  grid-column: 1 / -1;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 10px;
+  background: var(--color-bg-alt);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.family-members-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.member-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px 92px;
+  gap: 8px;
+}
+
+.mini-btn {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 7px 9px;
+  background: #fff;
+  color: var(--color-text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.mini-btn.danger {
+  color: var(--color-error);
+  border-color: rgba(196, 75, 95, 0.35);
+}
+
+.template-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.template-preview-column .mockup-container {
+  position: sticky;
+  top: 94px;
+}
+
+@media (max-width: 1100px) {
+  .template-studio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .template-preview-column .mockup-container {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .template-card-grid,
+  .template-product-grid,
+  .template-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .member-row {
+    grid-template-columns: 1fr;
+  }
+}

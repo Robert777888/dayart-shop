@@ -20,6 +20,38 @@ This file is the single place to resume work in a new window or session.
 3. Keep `codex-workflow-v1/` untracked unless explicitly requested.
 
 ## Current State (2026-04-04)
+- Template Studio vertical slice shipped on 2026-04-06 as a parallel flow to the existing AI generator.
+- New route `/templates` provides guided, slot-based personalization with 3 active templates:
+  - `vintage_year_badge`
+  - `pet_name_emblem`
+  - `family_birth_garden`
+- Added deterministic SVG composer in [composer.ts](/Users/robertkispal/Documents/projects/AI_TEE_webshop/src/lib/templates/composer.ts) to generate print-ready vector artwork from form payloads (no prompt-to-image delay).
+- Added template metadata catalog in [templateCatalog.ts](/Users/robertkispal/Documents/projects/AI_TEE_webshop/src/data/templateCatalog.ts), including 10 template ideas with active/coming-soon states.
+- Added backend endpoint [route.ts](/Users/robertkispal/Documents/projects/AI_TEE_webshop/src/app/api/templates/compose/route.ts) to compose SVG, optionally upload raw/processed SVG assets to Cloudinary, and persist generation metadata in Supabase.
+- Cloudinary helper now includes SVG upload utilities in [cloudinary.ts](/Users/robertkispal/Documents/projects/AI_TEE_webshop/src/lib/cloudinary.ts) (`uploadRawSvgAsset`, `uploadProcessedSvgAsset`).
+- Added Template Studio UI component [TemplateStudio.tsx](/Users/robertkispal/Documents/projects/AI_TEE_webshop/src/components/TemplateStudio.tsx) with:
+  - template picker
+  - dynamic per-template forms
+  - live apparel preview
+  - cart integration compatible with existing mockup/selection/cart APIs when `processedAssetId` exists
+- Added `/templates` navigation entry in [Navbar.tsx](/Users/robertkispal/Documents/projects/AI_TEE_webshop/src/components/Navbar.tsx).
+- Added dedicated Template Studio styling in [globals.css](/Users/robertkispal/Documents/projects/AI_TEE_webshop/src/app/globals.css).
+- Verification completed on 2026-04-06:
+  - `npm run lint` ✅
+  - `npx tsc --noEmit` ✅
+- Template hardening pass completed on 2026-04-06:
+  - auto-fit text sizing and letter-spacing guardrails added in template composer for long user inputs
+  - year bounds clamped (`1900..2100`)
+  - strict API-side payload validation added per template before compose
+  - normalized payload is persisted to generation prompt metadata for traceability
+- Verification after hardening:
+  - `npm run lint` ✅
+  - `npx tsc --noEmit` ✅
+- Feasibility review completed on 2026-04-06 for `/Users/robertkispal/Downloads/implementation_plan.md` against the live repo state.
+- Conclusion: the proposed modular SVG slot-based direction is feasible on the current stack, but the current implementation is still prompt-to-image (Gemini raster output) rather than template-slot SVG composition.
+- Existing strengths confirmed: multi-step wizard UI, generate/mockup/selection/cart/checkout API flow, Cloudinary integration, Supabase persistence, and lint-clean baseline.
+- Key gap confirmed: missing template catalog, slot schema, SVG composition engine (with text-to-path), and deterministic print-ready export pipeline.
+- Recommended rollout path captured: hybrid mode first (template-first + optional AI fallback), then staged migration to deterministic SVG-only best-seller templates.
 - The repo is a Next.js App Router webshop with AI design generation.
 - The latest pushed commit is `e203094` (refactor wizard copy and UI tokens).
 - Core memory hook files were restored (`AGENTS.md`, `CARRYOVER.md`, `CHANGELOG.md`, `ENVIRONMENT_VARS.txt`, `SKILL_INDEX.md`).
@@ -36,22 +68,28 @@ This file is the single place to resume work in a new window or session.
 - The central alignment note now captures `session logger` and the raw-to-generated memory loop.
 - Project `AGENTS.md` edits remain centralized until the pattern is clearly stable and low-risk.
 - The 2026-04-05 alignment sync rechecked recent notes, reinforced the concise/direct/action-first preference, and kept AGENTS edits centralized instead of promoting a repo-local change.
-- The latest session note in the writable mirror is `/Users/robertkispal/Documents/projects/AI_TEE_webshop/.tmp/obsidian-vault/Codex/Sessions/2026/04/2026-04-05_155801-session-review-recent-codex-session-notes-and-communicat.md`.
+- The latest alignment pass again found no new recurring clarification loop; the writable `.tmp` vault mirror remains the fallback when the canonical Obsidian vault cannot be written from this sandbox.
+- The 2026-04-06 alignment pass again found no new recurring clarification loop, and the mirror now captures the one-timestamp session-log invariant as stable shorthand.
+- The canonical Obsidian vault sync completed from the mirror after an elevated copy step.
+- The latest session note is `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-06_091355-session-developer-alignment-and-agents-memory-sync.md`.
 - The self-improvement workflow now treats one-off latency or stall reports as memory-worthy when the session names the slow step and impact.
 - The distiller now surfaces `Observed Friction` in workflow pattern notes when sessions mention slow, stalled, or timeout-prone steps.
-- The canonical Obsidian vault at `/Users/robertkispal/Obsidian/AI_memory/Codex` now has the synced session note and generated knowledge from this run.
+- The session logger now samples one timezone-aware timestamp per note so the frontmatter `created` field, note id, and filename stay aligned.
+- The latest self-improvement run wrote its session note and regenerated distillation in the writable `.tmp/obsidian-vault` mirror because the canonical Obsidian vault is still sandbox-blocked.
+- The canonical Obsidian vault at `/Users/robertkispal/Obsidian/AI_memory/Codex` remains the long-term target, but this sandbox still needs the writable `.tmp/obsidian-vault` mirror for session-note and distillation writes.
 - UX tuning (2026-04-05): the designer mockup print area was enlarged so generated art appears visibly bigger on apparel previews (`tshirt`: 54%, `sweatshirt`: 56% print-area width in `MockupPreview`).
 - UX tuning (2026-04-05): generation now shows live customer feedback in the preview (phase timeline, elapsed seconds, progress bar, rotating status hint) instead of a passive spinner-only state.
 - Generation phase flow in `useGenerator` now advances through `prompting -> generating -> polishing -> uploading` with timed state shifts while async generation is running, then clears timers safely on completion/error.
 - Cloudinary background removal is now explicitly disabled in the processed upload path due severe output quality regressions; `uploadProcessedAsset` performs plain upload only.
 - API persistence in `/api/generate` and `/api/upload` now stores processed assets with `status: "processed"` (no longer tagging normal flow as `fallback` when background removal is intentionally off).
+- Commit `fb5f951` was pushed to `origin/main` on 2026-04-05, so Vercel auto-deploy can build the latest UX + Cloudinary fixes from GitHub.
 
 ## Current Git Status (Summary)
 - Modified: `.gitignore`, `AGENTS.md`, `CARRYOVER.md`, `CHANGELOG.md`, `ENVIRONMENT_VARS.txt`, `SKILL_INDEX.md`, `PROJECT_MEMORY.md`.
 - Added: `.agent/` scaffold, `directives/`, `execution/`.
 - Not yet committed/pushed.
 - The repo-local workflow docs are the safe source of truth for the latest Codex memory changes until the canonical Obsidian vault is writable again.
-- The canonical Obsidian vault sync has been completed for this run.
+- The writable mirror has been refreshed for this run; the canonical Obsidian vault remains the long-term target when writes are available.
 
 ## Core Flows
 - Landing: `/` (hero + featured products + CTA).
@@ -111,7 +149,7 @@ This file is the single place to resume work in a new window or session.
 - Codex folder: `/Users/robertkispal/Obsidian/AI_memory/Codex`
 - Environment: set `OBSIDIAN_VAULT_PATH=/Users/robertkispal/Obsidian/AI_memory`
 - Recommended logger: `bash execution/session_logger.sh ...`
-- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-05_161736-session-kapcsoljuk-ki-a-cloudinary-h-tt-r-elt-vol-t-st-m.md`
+- Latest session note: `/Users/robertkispal/Obsidian/AI_memory/Codex/Sessions/2026/04/2026-04-05_162738-session-pushold-a-friss-jav-t-sokat-githubra-hogy-a-verc.md`
 - If canonical vault writes are blocked in a future run, use the writable `.tmp/obsidian-vault/Codex/...` fallback to preserve memory continuity.
 
 ## Immediate Next Steps
@@ -127,6 +165,7 @@ This file is the single place to resume work in a new window or session.
 - Consider mockup endpoint for Cloudinary overlays if/when base mockups are uploaded.
 - Upload base mockup images to Cloudinary and set `CLOUDINARY_MOCKUP_*_PUBLIC_ID` in `.env.local` to enable overlay previews.
 - Regenerate distilled Codex knowledge after the next Obsidian session note write so the generated memory stays in sync.
-- If canonical Obsidian writes are blocked again, use the writable `.tmp/obsidian-vault` mirror so the session-note/distillation contract still completes.
+- If canonical Obsidian writes are blocked again, use the writable `.tmp/obsidian-vault` mirror so the session-note/distillation contract still completes, then resync when permission is available.
 - Keep future AGENTS guidance proposals centralized unless the same rule repeats in another project.
+- Keep the single-timestamp logger invariant in future session logger changes.
 - If the canonical Codex vault stays blocked, use the `.tmp/obsidian-vault` fallback for the session note and distillation run.

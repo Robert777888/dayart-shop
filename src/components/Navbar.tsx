@@ -12,6 +12,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/designer", label: "Tervező" },
+    { href: "/templates", label: "Sablonok" },
     { href: "/shop", label: "Kollekció" },
     { href: "/shipping", label: "Szállítás" },
   ];

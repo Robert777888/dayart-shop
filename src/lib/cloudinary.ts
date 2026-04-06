@@ -99,6 +99,40 @@ export async function uploadRawAsset(base64Image: string): Promise<CloudinaryAss
   return mapUploadResult(result);
 }
 
+export async function uploadRawSvgAsset(svg: string): Promise<CloudinaryAsset> {
+  const client = getCloudinary();
+  const dataUri = `data:image/svg+xml;base64,${Buffer.from(svg, "utf8").toString("base64")}`;
+
+  const result: UploadApiResponse = await client.uploader.upload(dataUri, {
+    folder: "ai-tee/raw-svg",
+    resource_type: "image",
+    format: "svg",
+  });
+
+  if (!result.secure_url) {
+    throw new Error("Cloudinary SVG upload succeeded but returned no secure_url.");
+  }
+
+  return mapUploadResult(result);
+}
+
+export async function uploadProcessedSvgAsset(svg: string): Promise<CloudinaryAsset> {
+  const client = getCloudinary();
+  const dataUri = `data:image/svg+xml;base64,${Buffer.from(svg, "utf8").toString("base64")}`;
+
+  const result: UploadApiResponse = await client.uploader.upload(dataUri, {
+    folder: "ai-tee/processed-svg",
+    resource_type: "image",
+    format: "svg",
+  });
+
+  if (!result.secure_url) {
+    throw new Error("Cloudinary processed SVG upload succeeded but returned no secure_url.");
+  }
+
+  return mapUploadResult(result);
+}
+
 export async function uploadProcessedAsset(
   base64Image: string
 ): Promise<{ asset: CloudinaryAsset; backgroundRemoval: boolean }> {
